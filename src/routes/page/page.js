@@ -1,15 +1,11 @@
+import Navbar from "@/components/layout/Navbar.vue";
 import Overview from "@/views/page/OverView.vue";
 import Calendar from "@/views/page/CalendarView.vue";
 
 export default [
     {
-        path: '/',
-        // component: DashboardLayout,
-        redirect: '/admin/overview'
-    },
-    {
         path: '/admin',
-        // component: DashboardLayout,
+        component: Navbar,
         redirect: '/admin/overview',
         children: [
             {
