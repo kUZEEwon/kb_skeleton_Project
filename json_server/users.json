@@ -2,7 +2,7 @@
   "users": [
     {
       "id": 1,
-      "password": "xU4|8`",
+      "password": "1",
       "email": "jruckman0@nifty.com",
       "first_name": "Jeanna",
       "last_name": "Ruckman",
@@ -10,7 +10,7 @@
     },
     {
       "id": 2,
-      "password": "wS6#Xa",
+      "password": "2",
       "email": "cpinel1@nps.gov",
       "first_name": "Colby",
       "last_name": "Pinel",

@@ -17,15 +17,25 @@
 
 <script setup>
 import axios from 'axios';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { useCookies } from 'vue3-cookies';
+
 
 const id = ref('')
 const password = ref('')
 const { cookies } = useCookies();
-
-const singIn = async () => {
-    const response = await axios.get('http://localhost:3001/users', { "id": id.value, "pw": pw.value })
-    console.log(response)
+const router = useRouter();
+const signIn = async () => {
+    const response = await axios.get('http://localhost:3001/users', { params: { "id": id.value, "password": password.value } })
+    if (response.data[0].password == password.value) {
+        cookies.set('id', id.value);
+        router.push('/');
+    } else {
+        alert("잘못된 비밀번호입니다.")
+        id.value = ''
+        password.value = ''
+    }
 }
 </script>
 
