@@ -3,10 +3,10 @@
         <h1>Sign in</h1>
 
         <p>
-            <input class="inputVal" v-model.trim="uid" type="text" placeholder="Enter your ID" />
+            <input class="inputVal" v-model.trim="id" type="text" placeholder="Enter your ID" />
         </p>
         <p>
-            <input class="inputVal" v-model.trim="upw" type="password" placeholder="Enter your PW" />
+            <input class="inputVal" v-model.trim="password" type="password" placeholder="Enter your PW" />
         </p>
         <p>
             <button @click=signIn()>Sign in</button>
@@ -15,43 +15,17 @@
     </div>
 </template>
 
-<script>
+<script setup>
+import axios from 'axios';
+import { useCookies } from 'vue3-cookies';
 
-export default {
-    name: "Login",
-    data() {
-        return {
-            uid: "",
-            upw: "",
-        }
-    },
-    methods: {
-        signUp() {
-            alert("sign up")
-            // this.$router.push({name: "signup"})
-        },
-        signIn() {
-            alert("sign in")
-            // axios.post("http://localhost:3000/signin/", {
-            //     id: this.uid,
-            //     pw: this.upw,
-            // })
-            //     .then((res) => {
-            //         if (res.data.id === undefined){
-            //             alert("Check your ID and password again");
-            //             return;
-            //         }
+const id = ref('')
+const password = ref('')
+const { cookies } = useCookies();
 
-            //         alert(res.data.id);
-            //         localStorage.setItem("login", JSON.stringify(res.data));
-
-            //         this.$router.push({name: "bbslist"})
-            //     })
-            //     .catch((err) => {
-            //         console.log(err);
-            //     })
-        }
-    }
+const singIn = async () => {
+    const response = await axios.get('http://localhost:3001/users', { "id": id.value, "pw": pw.value })
+    console.log(response)
 }
 </script>
 
