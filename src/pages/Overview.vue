@@ -9,7 +9,7 @@
             </div>
             <div slot="content">
               <p class="card-category">Capacity</p>
-              <h4 class="card-title">105GB</h4>
+              <h4 class="card-title">123GB</h4>
             </div>
             <div slot="footer">
               <i class="fa fa-refresh"></i>Updated now
