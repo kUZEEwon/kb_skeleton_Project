@@ -8,6 +8,7 @@ export default [
         path: '/admin',
         component: Navbar,
         redirect: '/admin/overview',
+        meta:{requiresAuth:true},
         children: [
             {
                 path: 'overview',
