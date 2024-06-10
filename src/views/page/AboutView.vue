@@ -1,13 +1,12 @@
 <template>
     <div>
-        <h3>Calendar</h3>
-        <VCalendar expanded />
+        <h3>About</h3>
     </div>
 </template>
 
 <script>
     export default {
-        name: "Calendar"
+        
     }
 </script>
 

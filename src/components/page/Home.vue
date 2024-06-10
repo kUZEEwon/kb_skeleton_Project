@@ -1,15 +1,18 @@
 <template>
     <div>
-        <h3>Home</h3>
+        <p>balance : {{ balance }}</p>
     </div>
 </template>
 
 <script>
-    export default {
-        name: "Home"
+export default {
+    name: "Home",
+    data() {
+        return {
+            balance: 0
+        }
     }
+}
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

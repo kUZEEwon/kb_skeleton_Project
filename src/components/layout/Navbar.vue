@@ -1,10 +1,10 @@
 <template>
     <header>
-        <div id="brand">balance : {{ balance }}</div>
+        <div id="home"><router-link to="/admin">account book</router-link></div>
         <nav>
             <ul>
-                <li><router-link to="/about">About</router-link></li>
-                <li><router-link to="/user">Users</router-link></li>
+                <li><router-link to="/admin/about">About</router-link></li>
+                <li><router-link to="/admin/calendar">Calendar</router-link></li>
             </ul>
         </nav>
         <div id="hamburger-icon" :class="{ open: isOpened }" @click="toggleMenu">
@@ -12,8 +12,8 @@
             <div class="bar2"></div>
             <div class="bar3"></div>
             <ul class="mobile-menu">
-                <li><router-link to="/about">About</router-link></li>
-                <li><router-link to="/user">Users</router-link></li>
+                <li><router-link to="/admin/about">About</router-link></li>
+                <li><router-link to="/admin/calendar">Calendar</router-link></li>
             </ul>
         </div>
     </header>
@@ -36,7 +36,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 * {
     margin: 0;
     padding: 0;
@@ -95,9 +95,10 @@ li a {
     transform: rotate(45deg) translate(-6px, -7px);
 }
 
-#brand {
+#home {
     font-size: 32px;
     font-weight: 700;
+    color: white;
 }
 
 #brand a {
