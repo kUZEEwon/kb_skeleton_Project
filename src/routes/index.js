@@ -3,16 +3,13 @@ import { createWebHistory, createRouter } from "vue-router";
 import member from "@/routes/member/member.js";
 import {getCookie} from "@/auth/AuthService.js";
 import Main from "../views/Main.vue";
+import page from "@/routes/page/page.js";
+
 const router = createRouter({
     history: createWebHistory(),
     routes: [
         ...member,
-        {
-            path:'/',
-            name: 'main',
-            component: Main,
-            meta:{requiresAuth:true}
-        }
+        ...page
     ]
 });
 router.beforeEach((to, from, next) => {
