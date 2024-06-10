@@ -4,6 +4,7 @@
         "date":"2024-02-10",
         "cost":30000,
         "category":"식비",
+        "income":false,
         "memo":"학교 앞 식당에서 점심 먹음"
     }
 ]
