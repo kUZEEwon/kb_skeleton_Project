@@ -5,7 +5,7 @@ import member from "@/routes/member/member.js";
 const router = createRouter({
     history: createWebHistory(),
     routes: [
-        ...member,
+        ...member
     ]
 });
 
