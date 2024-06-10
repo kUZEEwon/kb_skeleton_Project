@@ -17,6 +17,7 @@
             </ul>
         </div>
     </header>
+    <router-view></router-view>
 </template>
 
 <script>
@@ -99,10 +100,6 @@ li a {
     font-size: 32px;
     font-weight: 700;
     color: white;
-}
-
-#brand a {
-    color: coral;
 }
 
 .mobile-menu {

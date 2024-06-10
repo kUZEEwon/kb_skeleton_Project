@@ -15,15 +15,20 @@ export default [
                 component: Overview
             },
             {
-                path: "/admin/calendar",
+                path: "calendar",
                 name: 'Calendar',
                 component: Calendar
             },
             {
-                path: "/admin/about",
+                path: "about",
                 name: 'About',
                 component: About
             }
         ]
+    },
+    {
+        path: "/calendar",
+        name: 'Calendar1',
+        component: Calendar
     }
 ];
