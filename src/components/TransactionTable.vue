@@ -18,7 +18,7 @@
             <tr v-for="(transaction, index) in data" :key="index">
                 <td>{{ transaction.category_total / total_expend * 100 }}</td>
                 <td>{{ transaction.category }}</td>
-                <td>{{ transaction.category_total }}</td>
+                <td>{{ transaction.category_total }}원</td>
             </tr>
         </tbody>
     </table>
