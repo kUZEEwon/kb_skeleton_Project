@@ -47,7 +47,7 @@ export default {
             category: "",
             income: false,
             memo: "",
-            categorys: ["식비", "카드대금", "기타"]
+            categorys: ["식비", "교통비", "쇼핑", "의료비", "여행", "취미", "문화생활"]
         }
     },
     methods: {
@@ -57,22 +57,20 @@ export default {
         addTransaction() {
             const id = this.$cookies.get('id');
 
-            // axios.post(`http://localhost:3001/users/`, {
-            //     "account": [{
-            //         "date": this.date,
-            //         "cost": this.cost,
-            //         "category": this.category,
-            //         "income": this.income,
-            //         "memo": this.memo
-            //     }
-            //     ]
-            // })
-            //     .then((res) => {
-            //         console.log(res.data);
-            //     })
-            //     .catch((err) => {
-            //         console.log(err);
-            //     })
+            axios.post(`http://localhost:3001/account/`, {
+                "uid": id,
+                "date": this.date,
+                "cost": this.cost,
+                "category": this.category,
+                "income": this.income,
+                "memo": this.memo
+            })
+                .then((res) => {
+                    console.log(res.data);
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
         },
     }
 }

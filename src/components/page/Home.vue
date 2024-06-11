@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- <p>balance : {{ balance }}</p> -->
-        <p>User Name : {{ username }}</p>
+        <!-- <p>User Name : {{ username }}</p> -->
         
         <AddTransaction v-if="modalcheck" @close="modalcheck=false" />
         <button @click="addTransaction()">
@@ -52,11 +52,10 @@ export default {
             return res
         }
 
-        axios.get(`http://localhost:3001/users/${id}/`)
+        axios.get(`http://localhost:3001/account/`)
             .then((res) => {
-                // console.log(res.data);
-                this.username = res.data.first_name;
-                this.statement = res.data.account;
+                // this.username = res.data.first_name;
+                this.statement = res.data;
 
                 this.total_expend = calc(this.statement);
                 // console.log(this.total_expend);
