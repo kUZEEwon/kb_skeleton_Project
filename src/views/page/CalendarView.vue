@@ -7,12 +7,13 @@
 <script>
 import Calendar from '@/components/page/Calendar.vue';
     export default {
+        name: "CalendarView",
         components: {
             Calendar
         }
     }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 
 </style>
