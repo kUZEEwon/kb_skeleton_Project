@@ -7,6 +7,9 @@ const app = createApp(App);
 import router from "./routes/index"
 app.use(router);
 
+import vueCookies from "vue-cookies";
+app.use(vueCookies);
+
 import VCalendar from 'v-calendar';
 import 'v-calendar/style.css';
 

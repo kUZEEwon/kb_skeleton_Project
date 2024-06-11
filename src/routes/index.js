@@ -17,6 +17,7 @@ router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.requiresAuth)) {
       // 인증이 필요한 페이지
       if (!getCookie()) { // 로그인되어 있지 않으면
+        alert('로그인이 필요합니다');
         next('/login'); // 로그인 페이지로 리다이렉션
       } else {
         next(); // 인증되었으면 계속 진행
