@@ -26,10 +26,5 @@ export default [
                 component: About
             }
         ]
-    },
-    {
-        path: "/calendar",
-        name: 'Calendar1',
-        component: Calendar
     }
 ];

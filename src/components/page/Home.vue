@@ -23,9 +23,16 @@
                     {{ nextMonthLabel }} <i class="fas fa-chevron-right"></i>
                 </button>
             </div>
+            <div>
+                <AddTransaction v-if="modalcheck" @close="modalcheck = false;" />
+                <button @click="addTransaction()">
+                    내역추가
+                </button>
+            </div>
         </div>
         <!-- <PieChart :data="categoryData" /> -->
-        <TransactionTable :data="transactionData" />
+        <!-- <TransactionTable :data="transactionData" /> -->
+        <TransactionTable :data="category" :total_expend="calc(category)" />
     </div>
 </template>
 
@@ -33,12 +40,14 @@
 import axios from 'axios';
 import PieChart from '@/components/PieChart.vue';
 import TransactionTable from '@/components/TransactionTable.vue';
+import AddTransaction from '@/components/page/AddTransaction.vue';
 
 export default {
     name: 'HomeView',
     components: {
         PieChart,
         TransactionTable,
+        AddTransaction,
     },
     data() {
         return {
@@ -48,6 +57,8 @@ export default {
             currentMonth: new Date().getMonth() + 1,
             categoryData: [],
             transactionData: [],
+            category: [],
+            modalcheck: false,
         };
     },
     computed: {
@@ -78,6 +89,7 @@ export default {
 
                 this.transactionData = filteredData;
                 this.updateCategoryData(filteredData);
+                this.category = this.reduceByCategory(filteredData);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -107,6 +119,29 @@ export default {
                 this.changeYear(-1);
             }
         },
+        reduceByCategory(d) {
+            const res = d.reduce((acc, cur) => {
+                const categoryIndex = acc.findIndex(item => item.category === cur.category);
+                if (categoryIndex === -1) {
+                    acc.push({ category: cur.category, cost: [cur.cost], category_total: cur.cost });
+                } else {
+                    acc[categoryIndex].cost.push(cur.cost);
+                    acc[categoryIndex].category_total += cur.cost;
+                }
+                return acc;
+            }, []);
+
+            return res;
+        },
+        calc(s) {
+            const res = s.reduce((acc, cur) => {
+                return acc + cur.category_total;
+            }, 0);
+            return res
+        },
+        addTransaction() {
+            this.modalcheck = true;
+        }
     },
 };
 </script>
