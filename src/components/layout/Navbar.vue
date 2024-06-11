@@ -7,6 +7,16 @@
                 <li><router-link to="/admin/calendar">Calendar</router-link></li>
             </ul>
         </nav>
+
+        <VDatePicker v-model="date" is-dark="system">
+            <template #default="{ togglePopover }">
+                <button class="px-3 py-2 bg-blue-500 text-sm text-white font-semibold rounded-md"
+                    @click="togglePopover">
+                    {{ date }}
+                </button>
+            </template>
+        </VDatePicker>
+
         <div id="hamburger-icon" :class="{ open: isOpened }" @click="toggleMenu">
             <div class="bar1"></div>
             <div class="bar2"></div>
@@ -21,17 +31,27 @@
 </template>
 
 <script>
+import { ref, reactive } from 'vue';
+
 export default {
     name: "Navbar",
     data() {
         return {
             balance: 0,
+            month: 6,
             isOpened: false
         }
     },
     methods: {
         toggleMenu() {
             this.isOpened = !this.isOpened
+        }
+    },
+    setup() {
+        const date = ref(new Date());
+
+        return {
+            date
         }
     }
 }

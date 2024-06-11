@@ -6,7 +6,30 @@
       "email": "jruckman0@nifty.com",
       "first_name": "Jeanna",
       "last_name": "Ruckman",
-      "gender": "Female"
+      "gender": "Female",
+      "account": [
+        {
+          "date": "2024-06-10",
+          "cost": 30000,
+          "category": "식비",
+          "income": false,
+          "memo": "학교 앞 식당에서 점심 먹음"
+        },
+        {
+          "date": "2024-06-01",
+          "cost": 300000,
+          "category": "카드대금",
+          "income": false,
+          "memo": "신용카드 대금"
+        },
+        {
+          "date": "2024-06-5",
+          "cost": 13000,
+          "category": "식비",
+          "income": false,
+          "memo": "학교 앞 식당에서 점심 먹음"
+        }
+      ]
     },
     {
       "id": 2,

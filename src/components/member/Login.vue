@@ -30,7 +30,7 @@ const signIn = async () => {
     const response = await axios.get('http://localhost:3001/users', { params: { "id": id.value, "password": password.value } })
     if (response.data[0].password == password.value) {
         cookies.set('id', id.value);
-        router.push('/');
+        router.push('/admin');
     } else {
         alert("잘못된 비밀번호입니다.")
         id.value = ''
