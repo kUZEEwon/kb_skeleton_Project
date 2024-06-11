@@ -29,7 +29,7 @@ const password = ref('')
 const { cookies } = useCookies();
 const router = useRouter();
 const signIn = async () => {
-    const response = await axios.get('http://localhost:3001/users', { params: { "id": id.value, "password": password.value } })
+    const response = await axios.get('http://localhost:3002/users', { params: { "id": id.value, "password": password.value } })
     if (response.data[0].password == password.value) {
         cookies.set('id', id.value, { path: '/' });
         router.push('/admin');

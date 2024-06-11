@@ -1,7 +1,9 @@
 <template>
+
   <div>
     <canvas ref="MyChart"></canvas>
   </div>
+
 </template>
 
 <script>
@@ -110,12 +112,14 @@ export default {
       };
     }
   }
+
 }
 </script>
 
 <style>
 canvas {
-  max-width: 100%;
-  max-height: 400px;
+
+    max-width: 100%;
+    max-height: 400px;
 }
 </style>

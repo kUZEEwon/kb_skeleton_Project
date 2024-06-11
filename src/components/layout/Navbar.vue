@@ -1,4 +1,5 @@
 <template>
+    <div>
     <header>
         <div id="home"><router-link to="/admin">account book</router-link></div>
         <nav>
@@ -7,6 +8,21 @@
                 <li><router-link to="/admin/calendar">Calendar</router-link></li>
             </ul>
         </nav>
+
+
+        <!-- <VDatePicker v-model="date" is-dark="system">
+            <template #default="{ togglePopover }">
+                <button class="px-3 py-2 bg-blue-500 text-sm text-white font-semibold rounded-md"
+                    @click="togglePopover">
+                    {{ date }}
+                </button>
+            </template>
+        </VDatePicker> -->
+
+        <div>
+            <p>잔액 : {{ incomeSum }}</p>
+            <p>이전달 대비 지출: {{ expenditureChange }}</p>
+        </div>
 
         <div id="hamburger-icon" :class="{ open: isOpened }" @click="toggleMenu">
             <div class="bar1"></div>
@@ -19,6 +35,7 @@
         </div>
     </header>
     <router-view></router-view>
+</div>
 </template>
 
 <script>
@@ -30,6 +47,8 @@ export default {
         return {
             balance: 0,
             month: 6,
+            incomeSum: 0,
+            expenditureChange: 0,
             isOpened: false
         }
     },
@@ -38,6 +57,12 @@ export default {
             this.isOpened = !this.isOpened
         }
     },
+
+    mounted() {
+        this.incomeSum = localStorage.getItem('incomeSum');
+        this.expenditureChange = localStorage.getItem('expenditureChange');
+    },
+
     setup() {
         const date = ref(new Date());
 
@@ -115,6 +140,10 @@ li a {
 
 .mobile-menu {
     display: none;
+}
+
+p{
+    color:aliceblue;
 }
 
 @media only screen and (max-width: 600px) {
