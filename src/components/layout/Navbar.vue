@@ -8,15 +8,6 @@
             </ul>
         </nav>
 
-        <VDatePicker v-model="date" is-dark="system">
-            <template #default="{ togglePopover }">
-                <button class="px-3 py-2 bg-blue-500 text-sm text-white font-semibold rounded-md"
-                    @click="togglePopover">
-                    {{ date }}
-                </button>
-            </template>
-        </VDatePicker>
-
         <div id="hamburger-icon" :class="{ open: isOpened }" @click="toggleMenu">
             <div class="bar1"></div>
             <div class="bar2"></div>
