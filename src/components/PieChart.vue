@@ -1,87 +1,110 @@
 <template>
     <div>
-      <canvas ref="chart"></canvas>
+      <canvas ref="MyChart"></canvas>
     </div>
   </template>
   
   <script>
-  import { ref, onMounted, onUnmounted, watch } from 'vue';
-  import { Chart, registerables } from 'chart.js';
-  
-  Chart.register(...registerables);
+  import { Chart, registerables } from 'chart.js'
+  Chart.register(...registerables)
   
   export default {
-    name: 'PieChart',
     props: {
-      data: {
+      chartData: {
         type: Array,
-        default: () => [],
-      },
+        required: true
+      }
     },
-    setup(props) {
-      const chart = ref(null);
-      let chartInstance = null;
-  
-      const createChart = () => {
-        if (!chart.value) {
-          console.error('Chart element is not defined.');
-          return;
+    data() {
+      return {
+        chart: null,
+        type: 'pie',
+        data: {
+          labels: [],
+          datasets: [{
+            label: 'Cost',
+            data: [],
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+              'rgba(255, 99, 132, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false
         }
-  
-        const ctx = chart.value.getContext('2d');
-        if (!ctx) {
-          console.error('Unable to get 2D context.');
-          return;
-        }
-  
-        chartInstance = new Chart(ctx, {
-          type: 'pie',
-          data: {
-            labels: props.data.map(item => item.category),
-            datasets: [{
-              data: props.data.map(item => item.value),
-              backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-          },
+      }
+    },
+    watch: {
+      chartData: {
+        handler(newData) {
+          this.updateChart(newData)
+        },
+        deep: true,
+        immediate: true
+      }
+    },
+    mounted() {
+      this.createChart()
+    },
+    methods: {
+      createChart() {
+        const ctx = this.$refs.MyChart.getContext('2d');
+        this.chart = new Chart(ctx, {
+          type: this.type,
+          data: this.getChartData(this.chartData),
+          options: this.options
         });
-      };
-  
-      const updateChart = () => {
-        if (!chartInstance) {
-          console.error('Chart instance is not defined.');
-          return;
+      },
+      updateChart(newData) {
+        if (this.chart) {
+          const newChartData = this.getChartData(newData);
+          this.chart.data.labels = newChartData.labels;
+          this.chart.data.datasets[0].data = newChartData.datasets[0].data;
+          this.chart.update();
         }
-  
-        chartInstance.data.labels = props.data.map(item => item.category);
-        chartInstance.data.datasets[0].data = props.data.map(item => item.value);
-        chartInstance.update();
-      };
-  
-      onMounted(() => {
-        createChart();
-      });
-  
-      watch(props.data, (newData) => {
-        if (chartInstance) {
-          updateChart();
-        } else {
-          createChart();
-        }
-      });
-  
-      onUnmounted(() => {
-        if (chartInstance) {
-          chartInstance.destroy();
-        }
-      });
-  
-      return { chart };
-    },
-  };
+      },
+      getChartData(data) {
+        return {
+          labels: data.map(item => item.category),
+          datasets: [{
+            data: data.map(item => item.value),
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+              'rgba(255, 99, 132, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+          }]
+        };
+      }
+    }
+  }
   </script>
   
   <style>

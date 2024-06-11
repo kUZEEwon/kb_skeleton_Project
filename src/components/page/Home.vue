@@ -24,7 +24,7 @@
           </button>
         </div>
       </div>
-      <PieChart :data="categoryData" />
+      <!-- <PieChart :data="categoryData" /> -->
       <TransactionTable :data="transactionData" />
     </div>
   </template>
@@ -149,4 +149,3 @@
     color: #007bff;
   }
   </style>
-  
