@@ -15,7 +15,7 @@
                 </thead>
                 <tbody>
                     <tr v-for="item in selectedData[0]" :key="item.id">
-                        <td></td>
+                        <td><input type="checkbox" id="all" value="all" v-model="checked"></td>
                         <td v-for="i in item" :key="item.id">
                             {{ i }}
                         </td>
@@ -36,7 +36,8 @@ export default {
             attrs: [],
             dates: [],
             dateData: [],
-            selectedData: []
+            selectedData: [],
+            checked: []
         }
     },
     setup() {
