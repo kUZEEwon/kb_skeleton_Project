@@ -1,182 +1,82 @@
-{
-  "users": [
+[
     {
-      "id": "1",
-      "username": "lstafford0",
-      "password": "1",
-      "email": "mhaslehurst0@nifty.com"
+        "id": 1,
+        "password": "xU4|8`",
+        "email": "jruckman0@nifty.com",
+        "first_name": "Jeanna",
+        "last_name": "Ruckman",
+        "gender": "Female"
     },
     {
-      "id": "2",
-      "password": "2",
-      "email": "mspeerman1@noaa.gov"
+        "id": 2,
+        "password": "wS6#Xa",
+        "email": "cpinel1@nps.gov",
+        "first_name": "Colby",
+        "last_name": "Pinel",
+        "gender": "Male"
     },
     {
-      "id": "3",
-      "username": "pmerriton2",
-      "password": "3",
-      "email": "asaterthwait2@multiply.com"
+        "id": 3,
+        "password": "wC9,AfaO<_N",
+        "email": "jalywen2@marketwatch.com",
+        "first_name": "Jules",
+        "last_name": "Alywen",
+        "gender": "Male"
     },
     {
-      "id": "4",
-      "username": "mceaplen3",
-      "password": "4",
-      "email": "iflorence3@parallels.com"
+        "id": 4,
+        "password": "nK0}1Hp",
+        "email": "jjoint3@tinypic.com",
+        "first_name": "Jean",
+        "last_name": "Joint",
+        "gender": "Female"
     },
     {
-      "id": "5",
-      "username": "msheed4",
-      "password": "pU5(?~pP\\a1F",
-      "email": "gcano4@bloglovin.com"
+        "id": 5,
+        "password": "lA9#sK+O",
+        "email": "csell4@artisteer.com",
+        "first_name": "Cristobal",
+        "last_name": "Sell",
+        "gender": "Male"
     },
     {
-      "id": "6",
-      "username": "arudloff5",
-      "password": "nC0|vPRU)B",
-      "email": "jdelabarre5@un.org"
+        "id": 6,
+        "password": "zK4,nsJ",
+        "email": "bwhear5@slashdot.org",
+        "first_name": "Becca",
+        "last_name": "Whear",
+        "gender": "Female"
     },
     {
-      "id": "7",
-      "username": "kharmour6",
-      "password": "fE2|KRQ5nDJZw",
-      "email": "jfishburn6@rambler.ru"
+        "id": 7,
+        "password": "jO5=u|Z7,Qc",
+        "email": "iruddle6@usa.gov",
+        "first_name": "Ilise",
+        "last_name": "Ruddle",
+        "gender": "Female"
     },
     {
-      "id": "8",
-      "username": "jmauditt7",
-      "password": "wF5),mf\"",
-      "email": "gklimmek7@constantcontact.com"
+        "id": 8,
+        "password": "oT6\"HAPK\\2",
+        "email": "khymans7@pcworld.com",
+        "first_name": "Kaleena",
+        "last_name": "Hymans",
+        "gender": "Female"
     },
     {
-      "id": "9",
-      "username": "kormond8",
-      "password": "bG0%efB5?{46",
-      "email": "agyves8@bravesites.com"
+        "id": 9,
+        "password": "sA0!?jM++)\\",
+        "email": "eburnet8@marriott.com",
+        "first_name": "Ephraim",
+        "last_name": "Burnet",
+        "gender": "Male"
     },
     {
-      "id": "10",
-      "username": "randersch9",
-      "password": "eQ7?A)1Qir?",
-      "email": "tdavenport9@addtoany.com"
+        "id": 10,
+        "password": "yC8&@B",
+        "email": "tjeal9@weebly.com",
+        "first_name": "Tann",
+        "last_name": "Jeal",
+        "gender": "Male"
     }
-  ],
-  "account": [
-    {
-      "id": "1",
-      "uid": 1,
-      "date": "2024-06-10",
-      "cost": 30000,
-      "category": "식비",
-      "income": false,
-      "memo": "학교 앞 식당에서 점심 먹음"
-    },
-    {
-      "id": "2",
-      "uid": 1,
-      "date": "2024-06-15",
-      "cost": 25000,
-      "category": "교통비",
-      "income": false,
-      "memo": "지하철 이용"
-    },
-    {
-      "id": "3",
-      "uid": 1,
-      "date": "2024-06-20",
-      "cost": 50000,
-      "category": "쇼핑",
-      "income": false,
-      "memo": "옷 구매"
-    },
-    {
-      "id": "4",
-      "uid": 2,
-      "date": "2024-06-05",
-      "cost": 150000,
-      "category": "가전제품",
-      "income": false,
-      "memo": "청소기 구매"
-    },
-    {
-      "id": "5",
-      "uid": 1,
-      "date": "2024-06-10",
-      "cost": 10000,
-      "category": "식비",
-      "income": false,
-      "memo": "커피 구매"
-    },
-    {
-      "id": "6",
-      "uid": 1,
-      "date": "2024-06-01",
-      "cost": 80000,
-      "category": "의료비",
-      "income": false,
-      "memo": "병원 진료"
-    },
-    {
-      "id": "7",
-      "uid": 1,
-      "date": "2024-06-15",
-      "cost": 60000,
-      "category": "여행",
-      "income": false,
-      "memo": "기차표 구매"
-    },
-    {
-      "id": "8",
-      "uid": 1,
-      "date": "2024-06-25",
-      "cost": 30000,
-      "category": "식비",
-      "income": false,
-      "memo": "저녁 외식"
-    },
-    {
-      "id": "9",
-      "uid": 1,
-      "date": "2024-06-30",
-      "cost": 45000,
-      "category": "취미",
-      "income": false,
-      "memo": "책 구매"
-    },
-    {
-      "id": "10",
-      "uid": 1,
-      "date": "2024-06-10",
-      "cost": 120000,
-      "category": "전자기기",
-      "income": false,
-      "memo": "스마트폰 구매"
-    },
-    {
-      "id": "11",
-      "uid": 1,
-      "date": "2024-06-01",
-      "cost": 20000,
-      "category": "문화생활",
-      "income": false,
-      "memo": "영화 관람"
-    },
-    {
-      "id": "d630",
-      "uid": "1",
-      "date": "2024-06-10",
-      "cost": 22222,
-      "category": "식비",
-      "income": false,
-      "memo": "22222"
-    },
-    {
-      "id": "65b0",
-      "uid": "1",
-      "date": "2024-06-10",
-      "cost": 33333,
-      "category": "쇼핑",
-      "income": false,
-      "memo": "33333"
-    }
-  ]
-}
+]

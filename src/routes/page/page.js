@@ -1,14 +1,16 @@
-import Navbar from "@/components/layout/Navbar.vue";
 import Overview from "@/views/page/OverView.vue";
 import Calendar from "@/views/page/CalendarView.vue";
-import About from "@/views/page/AboutView.vue";
 
 export default [
     {
+        path: '/',
+        // component: DashboardLayout,
+        redirect: '/admin/overview'
+    },
+    {
         path: '/admin',
-        component: Navbar,
+        // component: DashboardLayout,
         redirect: '/admin/overview',
-        meta:{requiresAuth:true},
         children: [
             {
                 path: 'overview',
@@ -16,15 +18,10 @@ export default [
                 component: Overview
             },
             {
-                path: "calendar",
+                path: "/admin/calendar",
                 name: 'Calendar',
                 component: Calendar
             },
-            {
-                path: "about",
-                name: 'About',
-                component: About
-            }
         ]
     }
 ];

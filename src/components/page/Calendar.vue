@@ -1,6 +1,5 @@
 <template>
     <div>
-        <h3>Calendar</h3>
         <VCalendar expanded />
     </div>
 </template>
@@ -11,6 +10,6 @@
     }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 
 </style>
