@@ -38,10 +38,10 @@
 
 <script>
 import axios from 'axios';
+import Cookies from 'js-cookie';
 import PieChart from '@/components/PieChart.vue';
 import TransactionTable from '@/components/TransactionTable.vue';
 import AddTransaction from '@/components/page/AddTransaction.vue';
-
 export default {
     name: 'HomeView',
     components: {
@@ -51,8 +51,9 @@ export default {
     },
     data() {
         return {
-            balance: 210000,
-            expenditureChange: 400000,
+            balance: 0,
+            expenditureChange: 0,
+            incomeSum:0,
             currentYear: new Date().getFullYear(),
             currentMonth: new Date().getMonth() + 1,
             categoryData: [],
@@ -79,20 +80,70 @@ export default {
     methods: {
         async fetchData() {
             try {
-                const response = await axios.get('http://localhost:3001/account');
+                const response = await axios.get('http://localhost:3002/account');
                 const data = response.data;
+                const cookieId = Cookies.get('id');
+                console.log("cookie id: " + cookieId);
 
+                // 이번 달 데이터 필터링
                 const filteredData = data.filter(item => {
                     const date = new Date(item.date);
                     return date.getFullYear() === this.currentYear && date.getMonth() + 1 === this.currentMonth;
                 });
 
+                // 이전 달 데이터 필터링
+                const previousMonth = this.currentMonth === 1 ? 12 : this.currentMonth - 1;
+                const previousYear = this.currentMonth === 1 ? this.currentYear - 1 : this.currentYear;
+                const filteredPrevMonthData = data.filter(item => {
+                    const date = new Date(item.date);
+                    return date.getFullYear() === previousYear && date.getMonth() + 1 === previousMonth;
+                });
+
                 this.transactionData = filteredData;
+
+                // 계산 함수 호출
+                this.calculateIncomeSumAndExpenditureChange();
+
                 this.updateCategoryData(filteredData);
                 this.category = this.reduceByCategory(filteredData);
+                console.log(this.category);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
+        },
+        calculateIncomeSumAndExpenditureChange() {
+            const cookieId = Cookies.get('id');
+            const data = this.transactionData;
+
+            // uid와 쿠키의 id 값이 동일하며 income이 true인 항목들의 값 합산
+            const filteredIncomeData = data.filter(item => item.uid == cookieId && item.income === true);
+            console.log("Filtered income data: ", filteredIncomeData);
+
+            this.incomeSum = filteredIncomeData.reduce((total, item) => total + item.cost, 0); // item.cost 합산
+
+            // incomeSum을 balance에 추가
+            this.balance += this.incomeSum;
+
+            // 이번 달과 이전 달의 지출 합계 계산
+            const currentMonthExpenditure = data.reduce((total, item) => total + (item.income ? 0 : item.cost), 0);
+            const previousMonthExpenditure = this.transactionData.reduce((total, item) => {
+                const date = new Date(item.date);
+                const previousMonth = this.currentMonth === 1 ? 12 : this.currentMonth - 1;
+                const previousYear = this.currentMonth === 1 ? this.currentYear - 1 : this.currentYear;
+                if (date.getFullYear() === previousYear && date.getMonth() + 1 === previousMonth) {
+                    return total + (item.income ? 0 : item.cost);
+                }
+                return total;
+            }, 0);
+
+            // 지출 변화 계산
+            this.expenditureChange = currentMonthExpenditure - previousMonthExpenditure;
+            // Local Storage에 저장
+            localStorage.setItem('incomeSum', this.incomeSum);
+            localStorage.setItem('expenditureChange', this.expenditureChange);
+            // 값이 제대로 계산되었는지 확인하기 위해 콘솔 로그 추가
+            console.log("합산된 income 값:", this.incomeSum); 
+
         },
         updateCategoryData(data) {
             const categories = {};
