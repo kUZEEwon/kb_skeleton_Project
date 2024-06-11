@@ -13,6 +13,8 @@ app.use(vueCookies);
 import VCalendar from 'v-calendar';
 import 'v-calendar/style.css';
 
+import '@fortawesome/fontawesome-free/css/all.css'; // Font Awesome 추가
+
 // Use plugin with optional defaults
 app.use(VCalendar, {})
 

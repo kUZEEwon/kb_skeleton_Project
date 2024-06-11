@@ -1,84 +1,63 @@
 {
   "users": [
     {
-      "id": "1",
+      "id": 1,
+      "username": "lstafford0",
       "password": "1",
-      "email": "jruckman0@nifty.com",
-      "first_name": "Jeanna",
-      "last_name": "Ruckman",
-      "gender": "Female"
+      "email": "mhaslehurst0@nifty.com"
     },
     {
       "id": "2",
       "password": "2",
-      "email": "cpinel1@nps.gov",
-      "first_name": "Colby",
-      "last_name": "Pinel",
-      "gender": "Male"
+      "email": "mspeerman1@noaa.gov"
     },
     {
-      "id": "3",
-      "password": "wC9,AfaO<_N",
-      "email": "jalywen2@marketwatch.com",
-      "first_name": "Jules",
-      "last_name": "Alywen",
-      "gender": "Male"
+      "id": 3,
+      "username": "pmerriton2",
+      "password": "3",
+      "email": "asaterthwait2@multiply.com"
     },
     {
-      "id": "4",
-      "password": "nK0}1Hp",
-      "email": "jjoint3@tinypic.com",
-      "first_name": "Jean",
-      "last_name": "Joint",
-      "gender": "Female"
+      "id": 4,
+      "username": "mceaplen3",
+      "password": "4",
+      "email": "iflorence3@parallels.com"
     },
     {
-      "id": "5",
-      "password": "lA9#sK+O",
-      "email": "csell4@artisteer.com",
-      "first_name": "Cristobal",
-      "last_name": "Sell",
-      "gender": "Male"
+      "id": 5,
+      "username": "msheed4",
+      "password": "pU5(?~pP\\a1F",
+      "email": "gcano4@bloglovin.com"
     },
     {
-      "id": "6",
-      "password": "zK4,nsJ",
-      "email": "bwhear5@slashdot.org",
-      "first_name": "Becca",
-      "last_name": "Whear",
-      "gender": "Female"
+      "id": 6,
+      "username": "arudloff5",
+      "password": "nC0|vPRU)B",
+      "email": "jdelabarre5@un.org"
     },
     {
-      "id": "7",
-      "password": "jO5=u|Z7,Qc",
-      "email": "iruddle6@usa.gov",
-      "first_name": "Ilise",
-      "last_name": "Ruddle",
-      "gender": "Female"
+      "id": 7,
+      "username": "kharmour6",
+      "password": "fE2|KRQ5nDJZw",
+      "email": "jfishburn6@rambler.ru"
     },
     {
-      "id": "8",
-      "password": "oT6\"HAPK\\2",
-      "email": "khymans7@pcworld.com",
-      "first_name": "Kaleena",
-      "last_name": "Hymans",
-      "gender": "Female"
+      "id": 8,
+      "username": "jmauditt7",
+      "password": "wF5),mf\"",
+      "email": "gklimmek7@constantcontact.com"
     },
     {
-      "id": "9",
-      "password": "sA0!?jM++)\\",
-      "email": "eburnet8@marriott.com",
-      "first_name": "Ephraim",
-      "last_name": "Burnet",
-      "gender": "Male"
+      "id": 9,
+      "username": "kormond8",
+      "password": "bG0%efB5?{46",
+      "email": "agyves8@bravesites.com"
     },
     {
-      "id": "10",
-      "password": "yC8&@B",
-      "email": "tjeal9@weebly.com",
-      "first_name": "Tann",
-      "last_name": "Jeal",
-      "gender": "Male"
+      "id": 10,
+      "username": "randersch9",
+      "password": "eQ7?A)1Qir?",
+      "email": "tdavenport9@addtoany.com"
     }
   ],
   "account": [

@@ -1,17 +1,19 @@
 <template>
     <div>
         <h1>Sign in</h1>
-
-        <p>
-            <input class="inputVal" v-model.trim="id" type="text" placeholder="Enter your ID" />
-        </p>
-        <p>
-            <input class="inputVal" v-model.trim="password" type="password" placeholder="Enter your PW" />
-        </p>
-        <p>
-            <button @click=signIn()>Sign in</button>
-            <button @click=signUp()>Sign Up</button>
-        </p>
+        <form>
+            <p>
+                <input class="inputVal" v-model.trim="id" type="text" placeholder="Enter your ID" />
+            </p>
+            <p>
+                <input class="inputVal" v-model.trim="password" autoComplete="off" type="password"
+                    placeholder="Enter your PW" />
+            </p>
+            <p>
+                <button @click=signIn()>Sign in</button>
+                <button @click=signUp()>Sign Up</button>
+            </p>
+        </form>
     </div>
 </template>
 
@@ -36,6 +38,9 @@ const signIn = async () => {
         id.value = ''
         password.value = ''
     }
+}
+const signUp = () => {
+    router.push('/signUp')
 }
 </script>
 
