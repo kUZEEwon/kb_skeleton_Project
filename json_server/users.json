@@ -177,6 +177,33 @@
       "category": "쇼핑",
       "income": false,
       "memo": "33333"
+    },
+    {
+      "id": "65b1",
+      "uid": "1",
+      "date": "2024-05-10",
+      "cost": 33333,
+      "category": "쇼핑",
+      "income": false,
+      "memo": "33333"
+    },
+    {
+      "id": "65b1",
+      "uid": "1",
+      "date": "2024-05-10",
+      "cost": 11113,
+      "category": "교통",
+      "income": false,
+      "memo": "33333"
+    },
+    {
+      "id": "65b1",
+      "uid": "1",
+      "date": "2024-05-10",
+      "cost": 2223,
+      "category": "식비",
+      "income": false,
+      "memo": "33333"
     }
   ]
 }
