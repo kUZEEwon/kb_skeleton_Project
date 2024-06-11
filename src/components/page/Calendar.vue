@@ -14,7 +14,7 @@
                 </thead>
                 <tbody>
                     <tr v-for="item in selectedData[0]" :key="item.id">
-                        <td v-for="i in item" :key="item.id">
+                        <td v-for="i in item" :key="i.id">
                             {{ i }}
                         </td>
                     </tr>
@@ -54,7 +54,7 @@ export default {
             try {
                 const response = await axios.get(`http://localhost:3001/account?uid=${uid}`);
                 const data = response.data;
-                
+
                 this.dateData = this.mergeDate(data);
 
                 this.dateData.forEach(element => {
@@ -68,7 +68,7 @@ export default {
                 console.error('Error fetching data:', error);
             }
         },
-        
+
         onDayClick() {
             const sDate = this.date.getFullYear() + "-"
                 + this.two(this.date.getMonth() + 1) + "-"
@@ -77,7 +77,7 @@ export default {
 
             this.selectedData = [];
             this.dateData.forEach(element => {
-                if (element.date==sDate){
+                if (element.date == sDate) {
                     this.selectedData.push(element.data);
                 }
             });
