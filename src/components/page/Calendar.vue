@@ -15,6 +15,7 @@
                 </thead>
                 <tbody>
                     <tr v-for="item in selectedData[0]" :key="item.id">
+                        <td></td>
                         <td v-for="i in item" :key="item.id">
                             {{ i }}
                         </td>
