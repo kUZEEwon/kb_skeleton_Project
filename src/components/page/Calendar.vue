@@ -7,6 +7,7 @@
         <table border="1">
             <template v-if="dates.includes(selectedDate)">
                 <thead>
+                    <th><input type="checkbox" id="all" value="all" v-model="checked"></th>
                     <th>category</th>
                     <th>cost</th>
                     <th>income</th>
