@@ -1,35 +1,41 @@
 <template>
-    <div>
-        <div class="year-month-selector">
-            <div class="year-display">
-                <button @click="changeYear(-1)" class="arrow-button">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                <span>{{ currentYear }}년</span>
-                <button @click="changeYear(1)" class="arrow-button">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-            </div>
-            <div class="month-display">
-                <button @click="changeMonth(-1)" class="arrow-button">
-                    <i class="fas fa-chevron-left"></i> {{ prevMonthLabel }}
-                </button>
-                <span>{{ currentMonth }}월</span>
-                <button @click="changeMonth(1)" class="arrow-button">
-                    {{ nextMonthLabel }} <i class="fas fa-chevron-right"></i>
-                </button>
-            </div>
-            <div>
-                <AddTransaction v-if="modalcheck" @close="modalcheck = false;" />
-                <button @click="addTransaction">
-                    내역추가
-                </button>
-            </div>
-        </div>
-        <PieChart v-if="categoryData.length > 0" :chartData="categoryData" />
+  <div class="calendar-container">
+    <button @click="changeYear(-1)">〈</button>
+    <!-- <span>{{ formattedDate }}</span> -->
+    <button @click="changeYear(1)">〉</button>
+  </div>
+  <div>
 
-        <TransactionTable :data="category" :total_expend="calc(category)" />
+    <div class="year-month-selector">
+      <div class="year-display">
+        <button @click="changeYear(-1)" class="arrow-button">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <span>{{ currentYear }}년</span>
+        <button @click="changeYear(1)" class="arrow-button">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+      <div class="month-display">
+        <button @click="changeMonth(-1)" class="arrow-button">
+          <i class="fas fa-chevron-left"></i> {{ prevMonthLabel }}
+        </button>
+        <span>{{ currentMonth }}월</span>
+        <button @click="changeMonth(1)" class="arrow-button">
+          {{ nextMonthLabel }} <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+      <div>
+        <AddTransaction v-if="modalcheck" @close="modalcheck = false;" />
+        <button @click="addTransaction">
+          내역추가
+        </button>
+      </div>
     </div>
+    <PieChart v-if="categoryData.length > 0" :chartData="categoryData" />
+
+    <TransactionTable :data="category" :total_expend="calc(category)" />
+  </div>
 </template>
 
 <script>
@@ -40,165 +46,194 @@ import AddTransaction from '@/components/page/AddTransaction.vue';
 import { useAccountStore } from '@/store/store.js';
 
 export default {
-    name: 'HomeView',
-    components: {
-        PieChart,
-        TransactionTable,
-        AddTransaction,
+  name: 'HomeView',
+  components: {
+    PieChart,
+    TransactionTable,
+    AddTransaction,
+  },
+  computed: {
+    prevMonthLabel() {
+      return (this.currentMonth === 1 ? 12 : this.currentMonth - 1) + "월";
     },
-    computed: {
-        prevMonthLabel() {
-            return (this.currentMonth === 1 ? 12 : this.currentMonth - 1) + "월";
-        },
-        nextMonthLabel() {
-            return (this.currentMonth === 12 ? 1 : this.currentMonth + 1) + "월";
-        },
-        /* expenseDifference() {
-            return useAccountStore().expenseDifference; // store에서 expenseDifference 가져오기
-        },
-        currentBalance() {
-            return useAccountStore().currentBalance;
-        } */
+    nextMonthLabel() {
+      return (this.currentMonth === 12 ? 1 : this.currentMonth + 1) + "월";
     },
-    data() {
-        return {
-            currentYear: new Date().getFullYear(),
-            currentMonth: new Date().getMonth() + 1,
-            categoryData: [],
-            transactionData: [],
-            category: [],
-            items: [],
-            modalcheck: false,
-        };
+    /* expenseDifference() {
+        return useAccountStore().expenseDifference; // store에서 expenseDifference 가져오기
     },
-    watch: {
-        currentYear: 'fetchData',
-        currentMonth: 'fetchData'
+    currentBalance() {
+        return useAccountStore().currentBalance;
+    } */
+  },
+  data() {
+    return {
+      currentYear: new Date().getFullYear(),
+      currentMonth: new Date().getMonth() + 1,
+      categoryData: [],
+      transactionData: [],
+      category: [],
+      items: [],
+      modalcheck: false,
+    };
+  },
+  watch: {
+    currentYear: 'fetchData',
+    currentMonth: 'fetchData'
+  },
+  mounted() {
+    this.fetchData();
+  },
+  methods: {
+    async fetchData() {
+      try {
+        const response = await axios.get('http://localhost:3001/account');
+        const data = response.data;
+        const cookieId = this.$cookies.get('id');
+
+        // 이번 달 데이터 필터링
+        const filteredData = data.filter(item => {
+          const date = new Date(item.date);
+          return date.getFullYear() === this.currentYear && date.getMonth() + 1 === this.currentMonth;
+        });
+
+        // 이전 달 데이터 필터링
+        const previousMonth = this.currentMonth === 1 ? 12 : this.currentMonth - 1;
+        const previousYear = this.currentMonth === 1 ? this.currentYear - 1 : this.currentYear;
+        const filteredPrevMonthData = data.filter(item => {
+          const date = new Date(item.date);
+          return date.getFullYear() === previousYear && date.getMonth() + 1 === previousMonth;
+        });
+
+        this.transactionData = filteredData;
+        this.items = data;
+
+        // store의 fetchData 액션 호출
+        await useAccountStore().fetchData(filteredData, filteredPrevMonthData);
+        useAccountStore().setItems(data.filter(item => item.uid == cookieId));
+
+        this.updateCategoryData(filteredData);
+        this.category = this.reduceByCategory(filteredData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
     },
-    mounted() {
-        this.fetchData();
-    },
-    methods: {
-        async fetchData() {
-            try {
-                const response = await axios.get('http://localhost:3001/account');
-                const data = response.data;
-                const cookieId = this.$cookies.get('id');
-
-                // 이번 달 데이터 필터링
-                const filteredData = data.filter(item => {
-                    const date = new Date(item.date);
-                    return date.getFullYear() === this.currentYear && date.getMonth() + 1 === this.currentMonth;
-                });
-
-                // 이전 달 데이터 필터링
-                const previousMonth = this.currentMonth === 1 ? 12 : this.currentMonth - 1;
-                const previousYear = this.currentMonth === 1 ? this.currentYear - 1 : this.currentYear;
-                const filteredPrevMonthData = data.filter(item => {
-                    const date = new Date(item.date);
-                    return date.getFullYear() === previousYear && date.getMonth() + 1 === previousMonth;
-                });
-
-                this.transactionData = filteredData;
-                this.items = data;
-
-               // store의 fetchData 액션 호출
-                await useAccountStore().fetchData(filteredData, filteredPrevMonthData);
-                useAccountStore().setItems( data.filter(item => item.uid == cookieId));
-        
-                this.updateCategoryData(filteredData);
-                this.category = this.reduceByCategory(filteredData);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        },
-        updateCategoryData(data) {
-            const categories = {};
-            data.forEach(item => {
-                if (!item.income) {
-                    if (!categories[item.category]) {
-                        categories[item.category] = 0;
-                    }
-                    categories[item.category] += item.cost;
-                }
-            });
-            this.categoryData = Object.keys(categories).map(key => ({ category: key, value: categories[key] }));
-        },
-        changeYear(offset) {
-            this.currentYear += offset;
-        },
-        changeMonth(offset) {
-            this.currentMonth += offset;
-            if (this.currentMonth > 12) {
-                this.currentMonth = 1;
-                this.changeYear(1);
-            } else if (this.currentMonth < 1) {
-                this.currentMonth = 12;
-                this.changeYear(-1);
-            }
-        },
-        reduceByCategory(d) {
-            const res = d.reduce((acc, cur) => {
-                const categoryIndex = acc.findIndex(item => item.category === cur.category);
-                if (categoryIndex === -1) {
-                    acc.push({ category: cur.category, cost: [cur.cost], category_total: cur.cost });
-                } else {
-                    acc[categoryIndex].cost.push(cur.cost);
-                    acc[categoryIndex].category_total += cur.cost;
-                }
-                return acc;
-            }, []);
-
-            return res;
-        },
-        calc(s) {
-            const res = s.reduce((acc, cur) => {
-                return acc + cur.category_total;
-            }, 0);
-            return res
-        },
-        addTransaction() {
-            this.modalcheck = true;
+    updateCategoryData(data) {
+      const categories = {};
+      data.forEach(item => {
+        if (!item.income) {
+          if (!categories[item.category]) {
+            categories[item.category] = 0;
+          }
+          categories[item.category] += item.cost;
         }
+      });
+      this.categoryData = Object.keys(categories).map(key => ({ category: key, value: categories[key] }));
     },
+    changeYear(offset) {
+      this.currentYear += offset;
+    },
+    changeMonth(offset) {
+      this.currentMonth += offset;
+      if (this.currentMonth > 12) {
+        this.currentMonth = 1;
+        this.changeYear(1);
+      } else if (this.currentMonth < 1) {
+        this.currentMonth = 12;
+        this.changeYear(-1);
+      }
+    },
+    reduceByCategory(d) {
+      const res = d.reduce((acc, cur) => {
+        const categoryIndex = acc.findIndex(item => item.category === cur.category);
+        if (categoryIndex === -1) {
+          acc.push({ category: cur.category, cost: [cur.cost], category_total: cur.cost });
+        } else {
+          acc[categoryIndex].cost.push(cur.cost);
+          acc[categoryIndex].category_total += cur.cost;
+        }
+        return acc;
+      }, []);
+
+      return res;
+    },
+    calc(s) {
+      const res = s.reduce((acc, cur) => {
+        return acc + cur.category_total;
+      }, 0);
+      return res
+    },
+    addTransaction() {
+      this.modalcheck = true;
+    }
+  },
 };
 </script>
 
-<style>
+<style scoped>
 .balance-info {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
 }
 
 .year-month-selector {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
 }
 
 .year-display,
 .month-display {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
 }
 
 .arrow-button {
-    background: none;
-    border: none;
-    font-size: 16px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
 }
 
 .arrow-button i {
-    margin: 0 5px;
+  margin: 0 5px;
 }
 
 .arrow-button:hover {
-    color: #007bff;
+  color: #007bff;
+}
+
+.calendar-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* 배경 색상 */
+  padding: 10px;
+  border-radius: 10px;
+  color: aaa;
+  /* 텍스트 색상 */
+  font-size: 20px;
+}
+
+button {
+  background: none;
+  border: none;
+  color: #aaa;
+  /* 버튼 텍스트 색상 */
+  font-size: 24px;
+  cursor: pointer;
+  margin: 0 20px;
+  /* 버튼 간격 */
+}
+
+button:hover {
+  color: #aaaaaa88;
+  /* 버튼 호버 색상 */
 }
 </style>
