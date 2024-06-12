@@ -78,8 +78,9 @@ export default {
   },
   methods: {
     async fetchData() {
+      const uid = this.$cookies.get('id');
       try {
-        const response = await axios.get('http://localhost:3001/account');
+        const response = await axios.get(`http://localhost:3001/account?uid=${uid}`);
         const data = response.data;
 
         const filteredData = data.filter(item => {
