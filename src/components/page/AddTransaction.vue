@@ -47,7 +47,7 @@ export default {
             category: "",
             income: false,
             memo: "",
-            categorys: ["식비", "교통비", "쇼핑", "의료비", "여행", "취미", "문화생활"]
+            categorys: ["식비", "교통비", "쇼핑", "의료비", "여행", "취미", "문화생활", "전자기기"]
         }
     },
     methods: {
