@@ -7,24 +7,7 @@
   <div>
 
     <div class="year-month-selector">
-      <div class="year-display">
-        <button @click="changeYear(-1)" class="arrow-button">
-          <i class="fas fa-chevron-left"></i>
-        </button>
-        <span>{{ currentYear }}년</span>
-        <button @click="changeYear(1)" class="arrow-button">
-          <i class="fas fa-chevron-right"></i>
-        </button>
-      </div>
-      <div class="month-display">
-        <button @click="changeMonth(-1)" class="arrow-button">
-          <i class="fas fa-chevron-left"></i> {{ prevMonthLabel }}
-        </button>
-        <span>{{ currentMonth }}월</span>
-        <button @click="changeMonth(1)" class="arrow-button">
-          {{ nextMonthLabel }} <i class="fas fa-chevron-right"></i>
-        </button>
-      </div>
+
       <div>
         <AddTransaction v-if="modalcheck" @close="modalcheck = false;" />
         <button @click="addTransaction">
