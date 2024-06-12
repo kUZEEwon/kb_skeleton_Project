@@ -1,34 +1,53 @@
 <template>
-    <header>
-        <div id="home"><router-link to="/admin">account book</router-link></div>
-        <nav>
-            <ul>
-                <li><router-link to="/admin/about">About</router-link></li>
-                <li><router-link to="/admin/calendar">Calendar</router-link></li>
-            </ul>
-        </nav>
+    <div>
+        <header>
+            <div id="home"><router-link to="/admin">account book</router-link></div>
+            <nav>
+                <ul>
+                    <li><router-link to="/admin/about">About</router-link></li>
+                    <li><router-link to="/admin/calendar">Calendar</router-link></li>
+                </ul>
+            </nav>
 
-        <div id="hamburger-icon" :class="{ open: isOpened }" @click="toggleMenu">
-            <div class="bar1"></div>
-            <div class="bar2"></div>
-            <div class="bar3"></div>
-            <ul class="mobile-menu">
-                <li><router-link to="/admin/about">About</router-link></li>
-                <li><router-link to="/admin/calendar">Calendar</router-link></li>
-            </ul>
+
+            <!-- <VDatePicker v-model="date" is-dark="system">
+            <template #default="{ togglePopover }">
+                <button class="px-3 py-2 bg-blue-500 text-sm text-white font-semibold rounded-md"
+                    @click="togglePopover">
+                    {{ date }}
+                </button>
+            </template>
+</VDatePicker> -->
+
+            <div>
+                <p>잔액 : {{ currentBalance }}</p>
+                <p>이전달 대비 지출: {{ expenseDifference }}</p>
+            </div>
+
+            <div id="hamburger-icon" :class="{ open: isOpened }" @click="toggleMenu">
+                <div class="bar1"></div>
+                <div class="bar2"></div>
+                <div class="bar3"></div>
+                <ul class="mobile-menu">
+                    <li><router-link to="/admin/about">About</router-link></li>
+                    <li><router-link to="/admin/calendar">Calendar</router-link></li>
+                </ul>
+            </div>
+        </header>
+        <div class="router-view">
+            <router-view></router-view>
         </div>
-    </header>
-    <router-view></router-view>
+    </div>
 </template>
 
 <script>
-import { ref, reactive } from 'vue';
+import { ref, computed } from 'vue';
+import { useAccountStore } from '@/store/store.js';
 
 export default {
     name: "Navbar",
     data() {
         return {
-            balance: 0,
             month: 6,
             isOpened: false
         }
@@ -36,13 +55,24 @@ export default {
     methods: {
         toggleMenu() {
             this.isOpened = !this.isOpened
-        }
+        },
     },
+
     setup() {
         const date = ref(new Date());
 
+        const accountStore = useAccountStore();
+
+        // Pinia store에서 getter 가져오기
+        const currentBalance = computed(() => accountStore.currentBalance);
+
+        // Pinia store에서 state 값 가져오기
+        const expenseDifference = computed(() => accountStore.expenseDifference);
+
         return {
-            date
+            date,
+            currentBalance,
+            expenseDifference
         }
     }
 }
@@ -61,6 +91,13 @@ body {
 }
 
 header {
+    /* navbar 상단 고정 */
+    position: fixed;
+    top: 0;
+    /* width: 100% */
+    left: 0;
+    right: 0;
+
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -81,6 +118,10 @@ ul {
 
 li a {
     color: white;
+}
+
+.router-view {
+    padding-top: 50px;
 }
 
 #hamburger-icon {
@@ -115,6 +156,10 @@ li a {
 
 .mobile-menu {
     display: none;
+}
+
+p {
+    color: aliceblue;
 }
 
 @media only screen and (max-width: 600px) {
