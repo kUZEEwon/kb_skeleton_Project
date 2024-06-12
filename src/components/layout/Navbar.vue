@@ -17,8 +17,10 @@
                     {{ date }}
                 </button>
             </template>
-</VDatePicker> -->
-            <div class="userInfo">
+
+            </VDatePicker> -->
+
+          <div class="userInfo">
                 <div class="username">
                     <p>{{ user.username }} 님 </p>
                 </div>

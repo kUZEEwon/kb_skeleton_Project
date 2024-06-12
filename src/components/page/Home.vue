@@ -1,8 +1,8 @@
 <template>
   <div class="calendar-container">
-    <button @click="changeYear(-1)">〈</button>
-    <!-- <span>{{ formattedDate }}</span> -->
-    <button @click="changeYear(1)">〉</button>
+    <button @click="changeMonth(-1)">〈</button>
+    <span>{{ formattedDate }}</span>
+    <button @click="changeMonth(1)">〉</button>
   </div>
   <div>
 
@@ -44,6 +44,7 @@ import PieChart from '@/components/PieChart.vue';
 import TransactionTable from '@/components/TransactionTable.vue';
 import AddTransaction from '@/components/page/AddTransaction.vue';
 import { useAccountStore } from '@/store/store.js';
+import { computed } from 'vue';
 
 export default {
   name: 'HomeView',
@@ -59,6 +60,10 @@ export default {
     nextMonthLabel() {
       return (this.currentMonth === 12 ? 1 : this.currentMonth + 1) + "월";
     },
+    formattedDate() {
+      const options = { year: 'numeric', month: 'long' };
+      return new Date(this.currentYear, this.currentMonth).toLocaleDateString('ko-KR', options);
+    }
     /* expenseDifference() {
         return useAccountStore().expenseDifference; // store에서 expenseDifference 가져오기
     },
@@ -145,12 +150,14 @@ export default {
     },
     reduceByCategory(d) {
       const res = d.reduce((acc, cur) => {
-        const categoryIndex = acc.findIndex(item => item.category === cur.category);
-        if (categoryIndex === -1) {
-          acc.push({ category: cur.category, cost: [cur.cost], category_total: cur.cost });
-        } else {
-          acc[categoryIndex].cost.push(cur.cost);
-          acc[categoryIndex].category_total += cur.cost;
+        if (!cur.income) {
+          const categoryIndex = acc.findIndex(item => item.category === cur.category);
+          if (categoryIndex === -1) {
+            acc.push({ category: cur.category, cost: [cur.cost], category_total: cur.cost });
+          } else {
+            acc[categoryIndex].cost.push(cur.cost);
+            acc[categoryIndex].category_total += cur.cost;
+          }
         }
         return acc;
       }, []);
