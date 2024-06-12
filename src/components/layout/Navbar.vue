@@ -22,7 +22,8 @@
 
           <div class="userInfo">
                 <div class="username">
-                    <p>{{ user.username }} 님 </p>
+                    <!-- <p>{{ user.username }} 님 </p> -->
+                    <router-link to="/admin/userinfo">{{ user.username }} 님 </router-link>
                 </div>
                 <div>
                     <p>잔액 : {{ currentBalance }}</p>

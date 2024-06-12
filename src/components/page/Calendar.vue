@@ -55,7 +55,7 @@
 </template>
 
 <script setup>
-import { onMounted, onBeforeUpdate, reactive, ref, computed } from 'vue';
+import { onMounted, onBeforeUpdate, reactive, ref, computed, watch } from 'vue';
 import axios from 'axios';
 
 const transactionData = reactive({ transaction: [] });
@@ -98,6 +98,11 @@ onBeforeUpdate(() => {
             selectDayData.transaction.push(data);
         }
     });
+})
+
+watch(date, async () => {
+    checked.value.splice(0);
+    updating.value = false;
 })
 
 function deleteTransaction() {
