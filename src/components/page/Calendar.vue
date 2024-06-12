@@ -1,8 +1,9 @@
 <template>
-    <div>
+    <div class="calendar-container">
         <h3>Calendar</h3>
         <VDatePicker expanded v-model="date" mode="date" :attributes='attrs' @dayclick="onDayClick()" />
-
+    </div>
+    <div>
         <table v-if="selectDayData.transaction.length !== 0">
             <thead>
                 <th><input type="checkbox" value="all" v-model="allChecked" :disabled="updating"></th>
@@ -196,4 +197,8 @@ function two(n) {
 
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+.calendar-container {
+    margin: 5px 10px 5px 10px;
+}
+</style>
