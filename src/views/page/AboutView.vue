@@ -4,8 +4,25 @@
         <span>{{ formattedDate }}</span>
         <button @click="nextMonth">〉</button>
     </div>
+    <div class="summary">
+        <div class="card-box">
+            <p>수입</p>
+            <div style="color: blue;">{{ calcTotalIncome }}</div>
+        </div>
+        <div class="card-box">
+            <p>지출</p>
+            <div style="color: red;">{{ calcTotalOutcome }}</div>
+        </div>
+        <div class="card-box">
+            <p>합계</p>
+            <div>{{ calcTotalIncome - calcTotalOutcome }}</div>
+        </div>
+
+    </div>
     <section>
-        <div class="tbl-header">
+        <p style="color: blue;">수입</p>
+        <br />
+        <div class=" tbl-header">
             <table>
                 <thead>
                     <tr>
@@ -24,7 +41,7 @@
                         <td>{{ new Date(data.date).getDate() }}일</td>
                         <td>{{ data.category }}</td>
                         <td>{{ data.memo }}</td>
-                        <td>{{ data.cost }}</td>
+                        <td>+{{ data.cost }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -32,6 +49,7 @@
     </section>
 
     <section>
+        <p style="color: red;">지출</p>
         <!--for demo wrap-->
         <select v-model="selectedCategory">
             <option value="">전체</option> <!-- 전체 옵션 -->
@@ -58,7 +76,7 @@
                         <td>{{ new Date(data.date).getDate() }}일</td>
                         <td>{{ data.category }}</td>
                         <td>{{ data.memo }}</td>
-                        <td>{{ data.cost }}</td>
+                        <td>-{{ data.cost }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -81,7 +99,8 @@ const categories = ref([
     { id: 4, name: '취미' },
     { id: 5, name: '여행' },
     { id: 6, name: '전자기기' },
-    { id: 6, name: '문화생활' }
+    { id: 7, name: '문화생활' },
+    { id: 8, name: '의료비' }
 ]);
 const currentDate = ref(new Date());
 
@@ -129,12 +148,36 @@ const filteredOutcome = computed(() => {
     } else {
         return outcome.value.filter(item => {
             const date = new Date(item.date);
-            console.log('date= ', date.getMonth())
-            console.log('current= ', currentDate.value.getMonth())
             return item.category === selectedCategory.value && date.getMonth() + 1 == currentDate.value.getMonth() + 1
         });
     }
 });
+
+/* 총 수입 계산*/
+const calcTotalIncome = computed(() => {
+    return filteredIncome.value.reduce((acc, currentValue) => {
+        return acc + currentValue.cost;
+    }, 0);
+})
+
+/* 총 지출 계산*/
+const calcTotalOutcome = computed(() => {
+    let totalCost = 0;
+
+    // 데이터 배열을 반복하면서 처리
+    outcome.value.forEach(item => {
+        // 데이터 객체의 "date" 값을 Date 객체로 변환
+        const itemDate = new Date(item.date);
+
+        // 데이터 객체의 "date" 값이 현재 월과 동일한지 확인
+        if (itemDate.getMonth() + 1 === currentDate.value.getMonth() + 1) { // getMonth()는 0부터 시작하므로 1을 더해줌
+            // 현재 월에 속하는 경우 cost 값을 더함
+            totalCost += item.cost;
+        }
+    });
+
+    return totalCost;
+})
 </script>
 
 <style scoped>
@@ -212,5 +255,18 @@ button {
 button:hover {
     color: #aaaaaa88;
     /* 버튼 호버 색상 */
+}
+
+.summary {
+    display: flex;
+    padding: 20px;
+    justify-content: space-between;
+    margin: 50px;
+    border: 1px solid #ddd;
+
+}
+
+p {
+    text-align: center;
 }
 </style>

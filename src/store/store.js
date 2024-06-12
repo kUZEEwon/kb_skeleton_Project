@@ -4,6 +4,7 @@ import axios from 'axios';
 export const useAccountStore = defineStore({
     id: 'account',
     state: () => ({
+        user:{},
         items: [],
         expenseDifference: 0
     }),
@@ -43,7 +44,13 @@ export const useAccountStore = defineStore({
 
             // 지출 변화 계산
             this.expenseDifference = currentMonthExpenditure - previousMonthExpenditure;
-        }
+        },
+        setUser(userData) {
+            this.user = userData;
+        },
+        clearUser() {
+            this.user = null;
+        },
     },
     
 });
