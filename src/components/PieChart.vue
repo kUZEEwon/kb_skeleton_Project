@@ -53,6 +53,7 @@ export default {
   watch: {
     chartData: {
       handler(newData) {
+        console.log(this.chartData)
         this.updateChart(newData)
       },
       deep: true,
