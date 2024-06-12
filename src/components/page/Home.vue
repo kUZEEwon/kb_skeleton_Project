@@ -45,7 +45,7 @@ export default {
     },
     formattedDate() {
       const options = { year: 'numeric', month: 'long' };
-      return new Date(this.currentYear, this.currentMonth).toLocaleDateString('ko-KR', options);
+      return new Date(this.currentYear, this.currentMonth - 1).toLocaleDateString('ko-KR', options);
     }
     /* expenseDifference() {
         return useAccountStore().expenseDifference; // store에서 expenseDifference 가져오기
