@@ -2,6 +2,7 @@ import Navbar from "@/components/layout/Navbar.vue";
 import Overview from "@/views/page/OverView.vue";
 import Calendar from "@/views/page/CalendarView.vue";
 import About from "@/views/page/AboutView.vue";
+import UserInfo from "@/views/page/UserInfoView.vue";
 
 export default [
     {
@@ -24,6 +25,11 @@ export default [
                 path: "about",
                 name: 'About',
                 component: About
+            },
+            {
+                path: "userInfo",
+                name: 'UserInfo',
+                component: UserInfo
             }
         ]
     }
