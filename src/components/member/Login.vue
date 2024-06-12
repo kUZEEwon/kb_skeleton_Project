@@ -22,9 +22,10 @@ import axios from 'axios';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useCookies } from 'vue3-cookies';
-
+import { useAccountStore } from '@/store/store.js';
 
 const id = ref('')
+const userStore = useAccountStore();
 const password = ref('')
 const { cookies } = useCookies();
 const router = useRouter();
@@ -32,6 +33,7 @@ const signIn = async () => {
     const response = await axios.get('http://localhost:3001/users', { params: { "id": id.value, "password": password.value } })
     if (response.data[0].password == password.value) {
         cookies.set('id', id.value, { path: '/' });
+        userStore.setUser({ "id": response.data[0].id, "email": response.data[0].email, "username": response.data[0].username })
         router.push('/admin');
     } else {
         alert("잘못된 비밀번호입니다.")

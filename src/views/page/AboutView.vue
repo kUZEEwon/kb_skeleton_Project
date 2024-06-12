@@ -20,6 +20,8 @@
 
     </div>
     <section>
+        <p style="color: blue;">수입</p>
+        <br />
         <div class=" tbl-header">
             <table>
                 <thead>
@@ -47,6 +49,7 @@
     </section>
 
     <section>
+        <p style="color: red;">지출</p>
         <!--for demo wrap-->
         <select v-model="selectedCategory">
             <option value="">전체</option> <!-- 전체 옵션 -->
