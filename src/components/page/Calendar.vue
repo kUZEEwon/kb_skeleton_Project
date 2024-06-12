@@ -11,49 +11,42 @@
                 <th>income</th>
                 <th>memo</th>
             </thead>
-            <tbody v-if="!updating">
+            <tbody>
                 <tr v-for="data in selectDayData.transaction" :key="data.id">
-                    <td><input type="checkbox" :id="data.id" :value="data.id" v-model="checked" :key="data.id"></td>
-                    <td>{{ data.category }}</td>
-                    <td>{{ data.cost }}</td>
-                    <td>{{ data.income }}</td>
-                    <td>{{ data.memo }}</td>
-                </tr>
-                <tr>
-                    <td colspan="5">
-                        <button @click="setUpdate()" :disabled="checked.length === 0">Update</button>
-                        <button @click="deleteTransaction()" :disabled="checked.length === 0">Delete</button>
-                    </td>
-                </tr>
-            </tbody>
-            <tbody v-else>
-                <tr v-for="data in selectDayData.transaction" :key="data.id">
-                    <td><input type="checkbox" :id="data" :value="data.id" v-model="checked"
-                            :key="data.id" disabled></td>
-                    <td v-if="checkId(data.id)"><select :id="data" :value="data.category" v-model="data.category"
-                            :key="data.id">
-                            <option v-for="category in categorys" :key="category.index">
+                    <td><input type="checkbox" :id="data.id" :value="data.id" v-model="checked" :key="data.id"
+                            :disabled="updating"></td>
+                    <td v-if="checkId(data.id) && updating"><select :id="data" :value="data.category"
+                            v-model="data.category" :key="data.id">
+                            <option v-if="!data.income" v-for="category in expendCategory" :key="category.index">
+                                {{ category }}
+                            </option>
+                            <option else v-for="category in incomeCategory" :key="category.index">
                                 {{ category }}
                             </option>
                         </select></td>
                     <td v-else>{{ data.category }}</td>
-                    <td v-if="checkId(data.id)"><input type="number" :id="data" :value="data.cost" v-model="data.cost"
-                            :key="data.id"></td>
+                    <td v-if="checkId(data.id) && updating"><input type="number" :id="data" :value="data.cost"
+                            v-model="data.cost" :key="data.id"></td>
                     <td v-else>{{ data.cost }}</td>
-                    <td v-if="checkId(data.id)"><select :id="data" :value="data.income" v-model="data.income"
-                            :key="data.id">
+                    <td v-if="checkId(data.id) && updating">
+                        <select :id="data" :value="data.income" v-model="data.income" :key="data.id">
                             <option value="true">수입</option>
                             <option value="false">지출</option>
-                        </select></td>
+                        </select>
+                    </td>
                     <td v-else>{{ data.income }}</td>
-                    <td v-if="checkId(data.id)"><input type="text" :id="data" :value="data.memo" v-model="data.memo"
-                            :key="data.id"></td>
+                    <td v-if="checkId(data.id) && updating"><input type="text" :id="data" :value="data.memo"
+                            v-model="data.memo" :key="data.id"></td>
                     <td v-else>{{ data.memo }}</td>
                 </tr>
                 <tr>
-                    <td colspan="5">
+                    <td v-if="!updating" colspan="5">
+                        <button @click="setUpdate()" :disabled="checked.length === 0">Update</button>
+                        <button @click="deleteTransaction()" :disabled="checked.length === 0">Delete</button>
+                    </td>
+                    <td v-else colspan="5">
                         <button @click="updateTransaction()">modification completed</button>
-                        <button @click="setUpdate()">cancle</button>
+                        <button @click="setUpdate()">cancel</button>
                     </td>
                 </tr>
             </tbody>
@@ -126,7 +119,8 @@ function deleteTransaction() {
 }
 
 const updating = ref(false);
-const categorys = ["식비", "교통비", "쇼핑", "의료비", "여행", "취미", "문화생활", "전자기기"];
+const expendCategory = ["식비", "교통비", "쇼핑", "의료비", "여행", "취미", "문화생활", "전자기기"];
+const incomeCategory = ["용돈", "급여", "기타"];
 
 function updateTransaction() {
     checked.value.forEach(async (id) => {

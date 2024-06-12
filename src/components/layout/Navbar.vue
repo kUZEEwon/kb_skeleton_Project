@@ -18,7 +18,9 @@
             </ul>
         </div>
     </header>
-    <router-view></router-view>
+    <div class="router-view">
+        <router-view></router-view>
+    </div>
 </template>
 
 <script>
@@ -61,6 +63,13 @@ body {
 }
 
 header {
+    /* navbar 상단 고정 */
+    position: fixed;
+    top: 0;
+    /* width: 100% */
+    left: 0;
+    right: 0;
+
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -81,6 +90,10 @@ ul {
 
 li a {
     color: white;
+}
+
+.router-view {
+    padding-top: 50px;
 }
 
 #hamburger-icon {
