@@ -1,51 +1,51 @@
 <template>
     <div>
-    <header>
-        <div id="home"><router-link to="/admin">account book</router-link></div>
-        <nav>
-            <ul>
-                <li><router-link to="/admin/about">About</router-link></li>
-                <li><router-link to="/admin/calendar">Calendar</router-link></li>
-            </ul>
-        </nav>
+        <header>
+            <div id="home"><router-link to="/admin">account book</router-link></div>
+            <nav>
+                <ul>
+                    <li><router-link to="/admin/about">About</router-link></li>
+                    <li><router-link to="/admin/calendar">Calendar</router-link></li>
+                </ul>
+            </nav>
 
 
-        <!-- <VDatePicker v-model="date" is-dark="system">
+            <!-- <VDatePicker v-model="date" is-dark="system">
             <template #default="{ togglePopover }">
                 <button class="px-3 py-2 bg-blue-500 text-sm text-white font-semibold rounded-md"
                     @click="togglePopover">
                     {{ date }}
                 </button>
             </template>
-        </VDatePicker> -->
+            </VDatePicker> -->
 
-        <div>
-            <p>잔액 : {{ incomeSum }}</p>
-            <p>이전달 대비 지출: {{ expenditureChange }}</p>
-        </div>
+            <div>
+                <p>잔액 : {{ currentBalance }}</p>
+                <p>이전달 대비 지출: {{ expenseDifference }}</p>
+            </div>
 
-        <div id="hamburger-icon" :class="{ open: isOpened }" @click="toggleMenu">
-            <div class="bar1"></div>
-            <div class="bar2"></div>
-            <div class="bar3"></div>
-            <ul class="mobile-menu">
-                <li><router-link to="/admin/about">About</router-link></li>
-                <li><router-link to="/admin/calendar">Calendar</router-link></li>
-            </ul>
-        </div>
-    </header>
-    <router-view></router-view>
-</div>
+            <div id="hamburger-icon" :class="{ open: isOpened }" @click="toggleMenu">
+                <div class="bar1"></div>
+                <div class="bar2"></div>
+                <div class="bar3"></div>
+                <ul class="mobile-menu">
+                    <li><router-link to="/admin/about">About</router-link></li>
+                    <li><router-link to="/admin/calendar">Calendar</router-link></li>
+                </ul>
+            </div>
+        </header>
+        <router-view></router-view>
+    </div>
 </template>
 
 <script>
-import { ref, reactive } from 'vue';
+import { ref,computed } from 'vue';
+import { useAccountStore } from '@/store/store.js';
 
 export default {
     name: "Navbar",
     data() {
         return {
-            balance: 0,
             month: 6,
             incomeSum: 0,
             expenditureChange: 0,
@@ -55,19 +55,24 @@ export default {
     methods: {
         toggleMenu() {
             this.isOpened = !this.isOpened
-        }
-    },
-
-    mounted() {
-        this.incomeSum = localStorage.getItem('incomeSum');
-        this.expenditureChange = localStorage.getItem('expenditureChange');
+        },
     },
 
     setup() {
         const date = ref(new Date());
 
+        const accountStore = useAccountStore();
+
+        // Pinia store에서 getter 가져오기
+        const currentBalance = computed(() => accountStore.currentBalance);
+
+        // Pinia store에서 state 값 가져오기
+        const expenseDifference = computed(() => accountStore.expenseDifference);
+
         return {
-            date
+            date,
+            currentBalance,
+            expenseDifference
         }
     }
 }
@@ -142,8 +147,8 @@ li a {
     display: none;
 }
 
-p{
-    color:aliceblue;
+p {
+    color: aliceblue;
 }
 
 @media only screen and (max-width: 600px) {
