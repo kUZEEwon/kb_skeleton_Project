@@ -19,6 +19,7 @@
                     {{ nextMonthLabel }} <i class="fas fa-chevron-right"></i>
                 </button>
             </div>
+            <br/>
             <div>
                 <AddTransaction v-if="modalcheck" @close="modalcheck = false;" />
                 <button @click="addTransaction">
@@ -26,8 +27,9 @@
                 </button>
             </div>
         </div>
+        <br/>
         <PieChart v-if="categoryData.length > 0" :chartData="categoryData" />
-
+        <br/><br/>
         <TransactionTable :data="category" :total_expend="calc(category)" />
     </div>
 </template>
@@ -139,6 +141,7 @@ export default {
         },
         reduceByCategory(d) {
             const res = d.reduce((acc, cur) => {
+                if(!cur.income){
                 const categoryIndex = acc.findIndex(item => item.category === cur.category);
                 if (categoryIndex === -1) {
                     acc.push({ category: cur.category, cost: [cur.cost], category_total: cur.cost });
@@ -146,6 +149,7 @@ export default {
                     acc[categoryIndex].cost.push(cur.cost);
                     acc[categoryIndex].category_total += cur.cost;
                 }
+            }
                 return acc;
             }, []);
 
