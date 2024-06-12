@@ -5,8 +5,7 @@
 
         <table v-if="selectDayData.transaction.length !== 0">
             <thead>
-                <th v-if="!updating"><input type="checkbox" value="all" v-model="allChecked"></th>
-                <th v-else><input type="checkbox" value="all" v-model="allChecked" disabled></th>
+                <th><input type="checkbox" value="all" v-model="allChecked" :disabled="updating"></th>
                 <th>category</th>
                 <th>cost</th>
                 <th>income</th>
@@ -20,10 +19,10 @@
                     <td>{{ data.income }}</td>
                     <td>{{ data.memo }}</td>
                 </tr>
-                <tr v-if="checked.length !== 0">
+                <tr>
                     <td colspan="5">
-                        <button @click="setUpdate()">Update</button>
-                        <button @click="deleteTransaction()">Delete</button>
+                        <button @click="setUpdate()" :disabled="checked.length === 0">Update</button>
+                        <button @click="deleteTransaction()" :disabled="checked.length === 0">Delete</button>
                     </td>
                 </tr>
             </tbody>
