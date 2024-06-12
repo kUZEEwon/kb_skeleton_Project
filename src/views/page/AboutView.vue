@@ -1,4 +1,5 @@
 <template>
+    <br/>
     <div class="calendar-container">
         <button @click="prevMonth">〈</button>
         <span>{{ formattedDate }}</span>

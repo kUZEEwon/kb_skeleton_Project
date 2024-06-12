@@ -1,25 +1,33 @@
 <template>
-  <div class="calendar-container">
-    <button @click="changeMonth(-1)">〈</button>
-    <span>{{ formattedDate }}</span>
-    <button @click="changeMonth(1)">〉</button>
-  </div>
-  <div>
-
-    <div class="year-month-selector">
-
+    <br/>
+    <div>
+      <div class="calendar-container">
+        <button @click="changeMonth(-1)">〈</button>
+        <span>{{ formattedDate }}</span>
+        <button @click="changeMonth(1)">〉</button>
+      </div>
+  
+      <!-- 내역 추가 버튼을 이 부분에 배치 -->
+      <div class="add-transaction-button">
+      <button @click="modalOpen">
+        내역 추가
+      </button>
+    </div>
+    <br/>
+  
+      <div class="modal-wrap" v-show="modalCheck">
+        <div class="modal-container">
+          <AddTransaction @close="modalOpen"/>
+        </div>
+      </div>
+  
       <div>
-        <AddTransaction v-if="modalcheck" @close="modalcheck = false;" />
-        <button @click="addTransaction">
-          내역추가
-        </button>
+        <PieChart v-if="categoryData.length > 0" :chartData="categoryData" />
+        <br/><br/>
+        <TransactionTable :data="category" :total_expend="calc(category)" />
       </div>
     </div>
-    <PieChart v-if="categoryData.length > 0" :chartData="categoryData" />
-
-    <TransactionTable :data="category" :total_expend="calc(category)" />
-  </div>
-</template>
+  </template>
 
 <script>
 import axios from 'axios';
@@ -30,147 +38,145 @@ import { useAccountStore } from '@/store/store.js';
 import { computed } from 'vue';
 
 export default {
-  name: 'HomeView',
-  components: {
-    PieChart,
-    TransactionTable,
-    AddTransaction,
-  },
-  computed: {
-    prevMonthLabel() {
-      return (this.currentMonth === 1 ? 12 : this.currentMonth - 1) + "월";
+    name: 'HomeView',
+    components: {
+        PieChart,
+        TransactionTable,
+        AddTransaction,
     },
-    nextMonthLabel() {
-      return (this.currentMonth === 12 ? 1 : this.currentMonth + 1) + "월";
-    },
-    formattedDate() {
-      const options = { year: 'numeric', month: 'long' };
-      return new Date(this.currentYear, this.currentMonth - 1).toLocaleDateString('ko-KR', options);
-    }
-    /* expenseDifference() {
-        return useAccountStore().expenseDifference; // store에서 expenseDifference 가져오기
-    },
-    currentBalance() {
-        return useAccountStore().currentBalance;
-    } */
-  },
-  data() {
-    return {
-      currentYear: new Date().getFullYear(),
-      currentMonth: new Date().getMonth() + 1,
-      categoryData: [],
-      transactionData: [],
-      category: [],
-      items: [],
-      modalcheck: false,
-    };
-  },
-  watch: {
-    currentYear: 'fetchData',
-    currentMonth: 'fetchData'
-  },
-  mounted() {
-    this.fetchData();
-  },
-  methods: {
-    async fetchData() {
-      try {
-        const response = await axios.get('http://localhost:3001/account');
-        const data = response.data;
-        const cookieId = this.$cookies.get('id');
-
-        // 이번 달 데이터 필터링
-        const filteredData = data.filter(item => {
-          const date = new Date(item.date);
-          return date.getFullYear() === this.currentYear && date.getMonth() + 1 === this.currentMonth;
-        });
-
-        // 이전 달 데이터 필터링
-        const previousMonth = this.currentMonth === 1 ? 12 : this.currentMonth - 1;
-        const previousYear = this.currentMonth === 1 ? this.currentYear - 1 : this.currentYear;
-        const filteredPrevMonthData = data.filter(item => {
-          const date = new Date(item.date);
-          return date.getFullYear() === previousYear && date.getMonth() + 1 === previousMonth;
-        });
-
-        this.transactionData = filteredData;
-        this.items = data;
-
-        // store의 fetchData 액션 호출
-        await useAccountStore().fetchData(filteredData, filteredPrevMonthData);
-        useAccountStore().setItems(data.filter(item => item.uid == cookieId));
-
-        this.updateCategoryData(filteredData);
-        this.category = this.reduceByCategory(filteredData);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    },
-    updateCategoryData(data) {
-      const categories = {};
-      data.forEach(item => {
-        if (!item.income) {
-          if (!categories[item.category]) {
-            categories[item.category] = 0;
-          }
-          categories[item.category] += item.cost;
+    computed: {
+        prevMonthLabel() {
+            return (this.currentMonth === 1 ? 12 : this.currentMonth - 1) + "월";
+        },
+        nextMonthLabel() {
+            return (this.currentMonth === 12 ? 1 : this.currentMonth + 1) + "월";
+        },
+        formattedDate() {
+            const options = { year: 'numeric', month: 'long' };
+            return new Date(this.currentYear, this.currentMonth - 1).toLocaleDateString('ko-KR', options);
         }
-      });
-      this.categoryData = Object.keys(categories).map(key => ({ category: key, value: categories[key] }));
+        /* expenseDifference() {
+            return useAccountStore().expenseDifference; // store에서 expenseDifference 가져오기
+        },
+        currentBalance() {
+            return useAccountStore().currentBalance;
+        } */
     },
-    changeYear(offset) {
-      this.currentYear += offset;
+    data() {
+        return {
+            currentYear: new Date().getFullYear(),
+            currentMonth: new Date().getMonth() + 1,
+            categoryData: [],
+            transactionData: [],
+            category: [],
+            items: [],
+            modalCheck: false,
+        };
     },
-    changeMonth(offset) {
-      this.currentMonth += offset;
-      if (this.currentMonth > 12) {
-        this.currentMonth = 1;
-        this.changeYear(1);
-      } else if (this.currentMonth < 1) {
-        this.currentMonth = 12;
-        this.changeYear(-1);
-      }
+    watch: {
+        currentYear: 'fetchData',
+        currentMonth: 'fetchData'
     },
-    reduceByCategory(d) {
-      const res = d.reduce((acc, cur) => {
-        if (!cur.income) {
-          const categoryIndex = acc.findIndex(item => item.category === cur.category);
-          if (categoryIndex === -1) {
-            acc.push({ category: cur.category, cost: [cur.cost], category_total: cur.cost });
-          } else {
-            acc[categoryIndex].cost.push(cur.cost);
-            acc[categoryIndex].category_total += cur.cost;
-          }
-        }
-        return acc;
-      }, []);
+    mounted() {
+        this.fetchData();
+    },
+    methods: {
+        async fetchData() {
+            try {
+                const response = await axios.get('http://localhost:3001/account');
+                const data = response.data;
+                const cookieId = this.$cookies.get('id');
 
-      return res;
+                // 이번 달 데이터 필터링
+                const filteredData = data.filter(item => {
+                    const date = new Date(item.date);
+                    return date.getFullYear() === this.currentYear && date.getMonth() + 1 === this.currentMonth;
+                });
+
+                // 이전 달 데이터 필터링
+                const previousMonth = this.currentMonth === 1 ? 12 : this.currentMonth - 1;
+                const previousYear = this.currentMonth === 1 ? this.currentYear - 1 : this.currentYear;
+                const filteredPrevMonthData = data.filter(item => {
+                    const date = new Date(item.date);
+                    return date.getFullYear() === previousYear && date.getMonth() + 1 === previousMonth;
+                });
+
+                this.transactionData = filteredData;
+                this.items = data;
+
+                // store의 fetchData 액션 호출
+                await useAccountStore().fetchData(filteredData, filteredPrevMonthData);
+                useAccountStore().setItems(data.filter(item => item.uid == cookieId));
+
+                this.updateCategoryData(filteredData);
+                this.category = this.reduceByCategory(filteredData);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        },
+        updateCategoryData(data) {
+            const categories = {};
+            data.forEach(item => {
+                if (!item.income) {
+                    if (!categories[item.category]) {
+                        categories[item.category] = 0;
+                    }
+                    categories[item.category] += item.cost;
+                }
+            });
+            this.categoryData = Object.keys(categories).map(key => ({ category: key, value: categories[key] }));
+        },
+        changeYear(offset) {
+            this.currentYear += offset;
+        },
+        changeMonth(offset) {
+            this.currentMonth += offset;
+            if (this.currentMonth > 12) {
+                this.currentMonth = 1;
+                this.changeYear(1);
+            } else if (this.currentMonth < 1) {
+                this.currentMonth = 12;
+                this.changeYear(-1);
+            }
+        },
+        reduceByCategory(d) {
+            const res = d.reduce((acc, cur) => {
+                if (!cur.income) {
+                    const categoryIndex = acc.findIndex(item => item.category === cur.category);
+                    if (categoryIndex === -1) {
+                        acc.push({ category: cur.category, cost: [cur.cost], category_total: cur.cost });
+                    } else {
+                        acc[categoryIndex].cost.push(cur.cost);
+                        acc[categoryIndex].category_total += cur.cost;
+                    }
+                }
+                return acc;
+            }, []);
+
+            return res;
+        },
+        calc(s) {
+            const res = s.reduce((acc, cur) => {
+                return acc + cur.category_total;
+            }, 0);
+            return res
+        },
+        addTransaction() {
+            this.modalcheck = true;
+        },
+        modalOpen() {
+            this.modalCheck = !this.modalCheck
+        }
     },
-    calc(s) {
-      const res = s.reduce((acc, cur) => {
-        return acc + cur.category_total;
-      }, 0);
-      return res
-    },
-    addTransaction() {
-      this.modalcheck = true;
-    }
-  },
 };
 </script>
+
+
 
 <style scoped>
 .balance-info {
   display: flex;
   justify-content: space-between;
-  padding: 20px;
-}
-
-.year-month-selector {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   padding: 20px;
 }
 
@@ -202,28 +208,63 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-
-  /* 배경 색상 */
   padding: 10px;
   border-radius: 10px;
   color: aaa;
-  /* 텍스트 색상 */
   font-size: 20px;
+}
+
+.add-transaction-button {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.add-transaction-button button {
+  background-color: #0073cf;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.add-transaction-button button:hover {
+  background-color: #0c5db4;
 }
 
 button {
   background: none;
   border: none;
   color: #aaa;
-  /* 버튼 텍스트 색상 */
+  text-align: center;
   font-size: 24px;
   cursor: pointer;
   margin: 0 20px;
-  /* 버튼 간격 */
 }
 
 button:hover {
   color: #aaaaaa88;
-  /* 버튼 호버 색상 */
+}
+
+.modal-wrap {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.modal-container {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 550px;
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-sizing: border-box;
 }
 </style>
