@@ -17,11 +17,17 @@
                     {{ date }}
                 </button>
             </template>
+
             </VDatePicker> -->
 
-            <div>
-                <p>잔액 : {{ currentBalance }}</p>
-                <p>이전달 대비 지출: {{ expenseDifference }}</p>
+          <div class="userInfo">
+                <div class="username">
+                    <p>{{ user.username }} 님 </p>
+                </div>
+                <div>
+                    <p>잔액 : {{ currentBalance }}</p>
+                    <p>이전달 대비 지출: {{ expenseDifference }}</p>
+                </div>
             </div>
 
             <div id="hamburger-icon" :class="{ open: isOpened }" @click="toggleMenu">
@@ -38,6 +44,7 @@
             <router-view></router-view>
         </div>
     </div>
+
 </template>
 
 <script>
@@ -62,6 +69,7 @@ export default {
         const date = ref(new Date());
 
         const accountStore = useAccountStore();
+        const user = accountStore.user;
 
         // Pinia store에서 getter 가져오기
         const currentBalance = computed(() => accountStore.currentBalance);
@@ -71,6 +79,7 @@ export default {
 
         return {
             date,
+            user,
             currentBalance,
             expenseDifference
         }
@@ -160,6 +169,15 @@ li a {
 
 p {
     color: aliceblue;
+}
+
+.userInfo {
+    display: flex;
+    align-items: center;
+}
+
+.username {
+    margin-right: 10px;
 }
 
 @media only screen and (max-width: 600px) {
