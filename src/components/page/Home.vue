@@ -13,11 +13,6 @@
     <div class="modal-wrap" v-show="modalCheck">
         <div class="modal-container">
             <AddTransaction @close="modalOpen"/>
-
-            <!-- <div class="modal-btn">
-                <button @click="modalOpen">닫기</button>
-                <button @click="modalOpen">확인</button>
-            </div> -->
         </div>
     </div>
 
