@@ -53,6 +53,14 @@ export default {
     methods: {
         close() {
             this.$emit('close');
+            this.$emit('newData', {
+                "uid": id,
+                "date": this.date,
+                "cost": this.cost,
+                "category": this.category,
+                "income": this.income,
+                "memo": this.memo
+            });
         },
         addTransaction() {
             const id = this.$cookies.get('id');
