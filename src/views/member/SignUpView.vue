@@ -1,59 +1,29 @@
-<template lang="">
-    <div>
-        <h4 slot="header" class="card-title">Sign Up</h4>
-    <form>
-      <div class="row">
-        <div class="col-md-12">
-          <input type="text"
-                    label="Username"
-                    placeholder="Username"
-                    :required="true"
-                    v-model="user.username">
-          </input>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <input type="text"
-                    :required="true"
-                    label="ID"
-                    placeholder="ID"
-                    v-model="user.id">
-          </input>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <input type="password"
-                    :required="true"
-                    label="Password"
-                    placeholder="Password"
-                    autoComplete="off" 
-                    v-model="user.password">
-          </input>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <input type="text"
-                    label="Email"
-                    :required="true"
-                    placeholder="Email"
-                    v-model="user.email">
-          </input>
-        </div>
-      </div>
-      
-      <br/>
-      <div class="text-center">
-        <button type="submit" class="btn btn-info btn-fill float-right" @click.prevent="signUp">
-          Update Profile
-        </button>
-      </div>
-      <div class="clearfix"></div>
-    </form>
-    </div>
+<template>
+  <br/><br/>
+  <div class="user-info-container">
+      <h4 slot="header" class="card-title">회원 가입</h4>
+      <form>
+          <div class="input-group">
+              <input type="text" placeholder="Username" v-model="user.username" required>
+          </div>
+          <div class="input-group">
+              <input type="text" placeholder="ID" v-model="user.id" required>
+          </div>
+          <div class="input-group">
+              <input type="password" placeholder="Password" v-model="user.password" required autocomplete="off">
+          </div>
+          <div class="input-group">
+              <input type="text" placeholder="Email" v-model="user.email" required>
+          </div>
+          
+          <div class="button-group">
+              <button type="submit" class="btn btn-info" @click.prevent="signUp">가입하기</button>
+          </div>
+          <div class="clearfix"></div>
+      </form>
+  </div>
 </template>
+
 <script setup>
 import { reactive } from 'vue';
 import axios from 'axios';
@@ -82,6 +52,45 @@ const signUp = async () => {
     router.push('/');
 }
 </script>
-<style lang="">
+<style scopped>
+.user-info-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
 
+.card-title {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group input {
+    width: calc(100% - 10px);
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.button-group {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.button-group .btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    background-color: #007bff;
+    color: white;
+}
 </style>

@@ -59,6 +59,12 @@
       "username": "randersch9",
       "password": "eQ7?A)1Qir?",
       "email": "tdavenport9@addtoany.com"
+    },
+    {
+      "id": "jiwon",
+      "password": "0000",
+      "email": "jiwon@gmail.com",
+      "username": "jiwon"
     }
   ],
   "account": [
@@ -349,6 +355,15 @@
       "category": "여행",
       "income": false,
       "memo": "여행"
+    },
+    {
+      "id": "9bb6",
+      "uid": "jiwon",
+      "date": "2024-06-04",
+      "cost": 10000,
+      "category": "쇼핑",
+      "income": false,
+      "memo": "옷"
     }
   ]
 }

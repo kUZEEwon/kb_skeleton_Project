@@ -21,6 +21,7 @@
             </VDatePicker> -->
 
           <div class="userInfo">
+            <LogOutBtn />
                 <div class="username">
                     <!-- <p>{{ user.username }} 님 </p> -->
                     <router-link to="/admin/userinfo">{{ user.username }} 님 </router-link>
@@ -51,6 +52,7 @@
 <script>
 import { ref, computed } from 'vue';
 import { useAccountStore } from '@/store/store.js';
+import LogOutBtn from '../member/LogOutBtn.vue';
 
 export default {
     name: "Navbar",
@@ -60,6 +62,7 @@ export default {
             isOpened: false
         }
     },
+    components: { LogOutBtn, },
     methods: {
         toggleMenu() {
             this.isOpened = !this.isOpened
@@ -175,10 +178,16 @@ p {
 .userInfo {
     display: flex;
     align-items: center;
+    margin-right: 20px;
 }
 
 .username {
     margin-right: 10px;
+    margin-left: 10px;
+}
+
+.user-details {
+    margin-left: 10px; 
 }
 
 @media only screen and (max-width: 600px) {
