@@ -74,6 +74,9 @@ export default {
                 .then((res) => {
                     console.log(res.data);
                     this.updateChartData();
+
+                    this.updateTableData();
+
                 })
                 .catch((err) => {
                     console.log(err);
@@ -94,6 +97,17 @@ export default {
             let updatedData = { "category": this.category, "value": this.cost };
 
             this.$emit('update:chartData', updatedData);
+
+        },
+        updateTableData() {
+            let tableData = {
+                category: this.category,
+                cost: this.cost,  // 새로운 비용을 배열에 추가
+                category_total: this.category_total + this.cost  // 기존 총 비용에 새 비용을 더함
+            };
+
+            this.$emit('update:tableData', tableData);
+
         }
     }
 }
