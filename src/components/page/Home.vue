@@ -1,33 +1,33 @@
 <template>
-    <br/>
+    <br />
     <div>
-      <div class="calendar-container">
-        <button @click="changeMonth(-1)">〈</button>
-        <span>{{ formattedDate }}</span>
-        <button @click="changeMonth(1)">〉</button>
-      </div>
-  
-      <!-- 내역 추가 버튼을 이 부분에 배치 -->
-      <div class="add-transaction-button">
-      <button @click="modalOpen">
-        내역 추가
-      </button>
-    </div>
-    <br/>
-  
-      <div class="modal-wrap" v-show="modalCheck">
-        <div class="modal-container">
-          <AddTransaction @close="modalOpen"/>
+        <div class="calendar-container">
+            <button @click="changeMonth(-1)">〈</button>
+            <span>{{ formattedDate }}</span>
+            <button @click="changeMonth(1)">〉</button>
         </div>
-      </div>
-  
-      <div>
-        <PieChart v-if="categoryData.length > 0" :chartData="categoryData" />
-        <br/><br/>
-        <TransactionTable :data="category" :total_expend="calc(category)" />
-      </div>
+
+        <!-- 내역 추가 버튼을 이 부분에 배치 -->
+        <div class="add-transaction-button">
+            <button @click="modalOpen">
+                내역 추가
+            </button>
+        </div>
+        <br />
+
+        <div class="modal-wrap" v-show="modalCheck">
+            <div class="modal-container">
+                <AddTransaction @close="modalOpen" />
+            </div>
+        </div>
+
+        <div>
+            <PieChart v-if="categoryData.length > 0" :chartData="categoryData" />
+            <br /><br />
+            <TransactionTable :data="category" :total_expend="calc(category)" />
+        </div>
     </div>
-  </template>
+</template>
 
 <script>
 import axios from 'axios';
@@ -35,7 +35,6 @@ import PieChart from '@/components/PieChart.vue';
 import TransactionTable from '@/components/TransactionTable.vue';
 import AddTransaction from '@/components/page/AddTransaction.vue';
 import { useAccountStore } from '@/store/store.js';
-import { computed } from 'vue';
 
 export default {
     name: 'HomeView',
@@ -55,12 +54,6 @@ export default {
             const options = { year: 'numeric', month: 'long' };
             return new Date(this.currentYear, this.currentMonth - 1).toLocaleDateString('ko-KR', options);
         }
-        /* expenseDifference() {
-            return useAccountStore().expenseDifference; // store에서 expenseDifference 가져오기
-        },
-        currentBalance() {
-            return useAccountStore().currentBalance;
-        } */
     },
     data() {
         return {
@@ -84,8 +77,9 @@ export default {
         async fetchData() {
             try {
                 const response = await axios.get('http://localhost:3001/account');
-                const data = response.data;
                 const cookieId = this.$cookies.get('id');
+                const data = response.data.filter(item => item.uid == cookieId);
+                
 
                 // 이번 달 데이터 필터링
                 const filteredData = data.filter(item => {
@@ -106,9 +100,11 @@ export default {
 
                 // store의 fetchData 액션 호출
                 await useAccountStore().fetchData(filteredData, filteredPrevMonthData);
-                useAccountStore().setItems(data.filter(item => item.uid == cookieId));
+                useAccountStore().setItems(data);
 
+                // piechart
                 this.updateCategoryData(filteredData);
+                // table
                 this.category = this.reduceByCategory(filteredData);
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -175,96 +171,96 @@ export default {
 
 <style scoped>
 .balance-info {
-  display: flex;
-  justify-content: space-between;
-  padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
 }
 
 .year-display,
 .month-display {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
 }
 
 .arrow-button {
-  background: none;
-  border: none;
-  font-size: 16px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
 }
 
 .arrow-button i {
-  margin: 0 5px;
+    margin: 0 5px;
 }
 
 .arrow-button:hover {
-  color: #007bff;
+    color: #007bff;
 }
 
 .calendar-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px;
-  border-radius: 10px;
-  color: aaa;
-  font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border-radius: 10px;
+    color: aaa;
+    font-size: 20px;
 }
 
 .add-transaction-button {
-  text-align: center;
-  margin-top: 20px;
+    text-align: center;
+    margin-top: 20px;
 }
 
 .add-transaction-button button {
-  background-color: #0073cf;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
+    background-color: #0073cf;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
 }
 
 .add-transaction-button button:hover {
-  background-color: #0c5db4;
+    background-color: #0c5db4;
 }
 
 button {
-  background: none;
-  border: none;
-  color: #aaa;
-  text-align: center;
-  font-size: 24px;
-  cursor: pointer;
-  margin: 0 20px;
+    background: none;
+    border: none;
+    color: #aaa;
+    text-align: center;
+    font-size: 24px;
+    cursor: pointer;
+    margin: 0 20px;
 }
 
 button:hover {
-  color: #aaaaaa88;
+    color: #aaaaaa88;
 }
 
 .modal-wrap {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.4);
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
 }
 
 .modal-container {
-  position: relative;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 550px;
-  background: #fff;
-  border-radius: 10px;
-  padding: 20px;
-  box-sizing: border-box;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 550px;
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-sizing: border-box;
 }
 </style>
