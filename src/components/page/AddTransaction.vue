@@ -1,13 +1,13 @@
 <template>
     <div class="user-info-container">
-        <h3>Modal</h3>
+        <h3>거래내역 추가</h3>
         <div class="input-group">
             <label for="date">Date</label><br>
             <input id="date" class="inputVal" v-model.trim="date" type="date" placeholder="Enter the Date" />
         </div>
         <div class="input-group">
             <label for="cost">Cost</label><br>
-            <input id="cost" class="inputVal" v-model.trim="cost" type="number" placeholder="Enter the Cost" />
+            <input id="cost" class="inputVal" v-model.trim="cost" type="number" min="0" placeholder="Enter the Cost" />
         </div>
         <div class="input-group">
             <label for="category">Category</label><br>
@@ -28,7 +28,7 @@
             <textarea id="memo" v-model="memo" rows="3"></textarea>
         </div>
         <div class="button-group">
-            <button @click="addTransaction()" :disabled="!checkVal">Create</button>
+            <button @click="addTransaction(); close(); sendNewData()" v-bind:disabled="!checkVal">Create</button>
             <button @click="close()">Close</button>
         </div>
         <!-- {{ this.chartData }} -->
@@ -63,6 +63,9 @@ export default {
             categorys: ["식비", "교통비", "쇼핑", "의료비", "여행", "취미", "문화생활", "전자기기"],
             checkVal: false,
         }
+    },
+    beforeUnmount() {
+        // console.log("before Unmount");
     },
     watch: {
         'date': function () {
@@ -188,6 +191,7 @@ h3 {
 
 .button-group {
     text-align: center;
+    margin-bottom: 0px;
     margin-top: 20px;
 }
 

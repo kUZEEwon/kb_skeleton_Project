@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
 
-export const useAccountStore = defineStore({
+const useAccountStore = defineStore({
     id: 'account',
     state: () => ({
-        user:{},
+        user: {},
         items: [],
         expenseDifference: 0
     }),
@@ -27,14 +27,15 @@ export const useAccountStore = defineStore({
             try {
                 const response = await axios.get('http://localhost:3001/account');
                 this.setItems(response.data);
-                
+
                 // 지출 차이 계산
                 this.calculateExpenseDifference(currentMonth, currentYear);
             } catch (error) {
                 console.error('There was an error fetching the data!', error);
-            }},
+            }
+        },
         setItems(items) {
-            
+
             this.items = items;
         },
         calculateExpenseDifference(currentMonthData, previousMonthData) { // Accept currentMonth and currentYear as arguments
@@ -52,5 +53,7 @@ export const useAccountStore = defineStore({
             this.user = null;
         },
     },
-    
+
 });
+
+export { useAccountStore }
