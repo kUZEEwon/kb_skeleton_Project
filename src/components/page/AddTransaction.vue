@@ -32,7 +32,6 @@
             <button @click="addTransaction(); $emit('close')">Create</button>
             <button @click="$emit('close')">Close</button>
         </p>
-        {{ this.chartData }}
     </div>
 </template>
 
