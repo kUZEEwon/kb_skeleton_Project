@@ -74,16 +74,28 @@ export default {
             })
                 .then((res) => {
                     console.log(res.data);
-                    this.chartData.forEach(item => {
-                        if (item.category == this.category) {
-                            item.value += this.cost;
-                        }
-                    })
+                    this.updateChartData();
                 })
                 .catch((err) => {
                     console.log(err);
                 })
         },
+        updateChartData() {
+            // let updatedData = [...this.chartData]
+            // // console.log(updatedData)
+            // if (!updatedData[this.category]) {
+            //     updatedData.push({ "category": this.category, "value": this.cost })
+            // } else {
+            //     this.updatedData.map(item => {
+            //         if (item.category === this.category) {
+            //             item.value + this.cost
+            //         }
+            //     });
+            // }
+            let updatedData = { "category": this.category, "value": this.cost };
+
+            this.$emit('update:chartData', updatedData);
+        }
     }
 }
 </script>

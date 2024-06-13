@@ -18,7 +18,7 @@
 
     <div class="modal-wrap" v-show="modalCheck">
       <div class="modal-container">
-        <AddTransaction @close="modalOpen" :chartData="categoryData" />
+        <AddTransaction @close="modalOpen" :chartData="categoryData" @update:chartData="updateChartData" />
       </div>
     </div>
 
@@ -168,6 +168,21 @@ export default {
     },
     modalOpen() {
       this.modalCheck = !this.modalCheck
+    },
+    updateChartData(updatedData) {
+      console.log("들어온값: " + updatedData)
+      let found = false;
+      this.categoryData.forEach(item => {
+        if (item.category == updatedData.category) {
+          item.value += updatedData.value;
+          found = true;
+        }
+      });
+      if (!found) {
+        this.categoryData.push(updatedData)
+      }
+
+      console.log("최종값: " + this.categoryData)
     }
   },
 };
