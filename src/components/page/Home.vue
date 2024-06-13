@@ -1,4 +1,5 @@
 <template>
+
   <br />
   <div>
     <div class="calendar-container">
@@ -28,6 +29,7 @@
     </div>
   </div>
 </template>
+
 
 <script>
 import axios from 'axios';
@@ -180,6 +182,14 @@ export default {
   padding: 20px;
 }
 
+/*
+.year-month-selector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}*/
+
 .year-display,
 .month-display {
   display: flex;
@@ -205,6 +215,7 @@ export default {
 }
 
 .calendar-container {
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -212,6 +223,7 @@ export default {
   border-radius: 10px;
   color: aaa;
   font-size: 20px;
+
 }
 
 .add-transaction-button {
@@ -234,6 +246,7 @@ export default {
 }
 
 button {
+
   background: none;
   border: none;
   color: #aaa;
@@ -247,6 +260,7 @@ button:hover {
   color: #aaaaaa88;
 }
 
+
 .modal-wrap {
   position: fixed;
   left: 0;
@@ -255,6 +269,7 @@ button:hover {
   height: 100%;
   background: rgba(0, 0, 0, 0.4);
 }
+
 
 .modal-container {
   position: relative;

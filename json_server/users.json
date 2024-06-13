@@ -234,6 +234,7 @@
       "memo": "야미"
     },
     {
+<<<<<<< HEAD
       "id": "6d6e",
       "uid": "1",
       "date": "2024-06-13",
@@ -241,6 +242,24 @@
       "category": "쇼핑",
       "income": false,
       "memo": "12321"
+=======
+      "id": "bb5b",
+      "uid": "1",
+      "date": "2024-06-12",
+      "cost": 100000,
+      "category": "쇼핑",
+      "income": "false",
+      "memo": "test"
+    },
+    {
+      "id": "3684",
+      "uid": "1",
+      "date": "2024-06-12",
+      "cost": 12345,
+      "category": "쇼핑",
+      "income": false,
+      "memo": "12345"
+>>>>>>> 2a4d646e68f8c6adef194b169d2b02838bff5530
     }
   ]
 }

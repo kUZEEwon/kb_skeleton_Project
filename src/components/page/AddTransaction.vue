@@ -29,8 +29,8 @@
             <textarea v-model="memo" cols="30" rows="1"></textarea>
         </p>
         <p>
-            <button @click="addTransaction()">Create</button>
-            <button @click="$emit('close', false)">Close</button>
+            <button @click="addTransaction(); $emit('close')">Create</button>
+            <button @click="$emit('close')">Close</button>
         </p>
         {{ this.chartData }}
     </div>
