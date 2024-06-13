@@ -259,6 +259,87 @@
       "category": "쇼핑",
       "income": false,
       "memo": "12345"
+    },
+    {
+      "id": "649d",
+      "uid": "1",
+      "date": "2024-06-04",
+      "cost": 10000,
+      "category": "의료비",
+      "income": false,
+      "memo": "아파요"
+    },
+    {
+      "id": "1347",
+      "uid": "1",
+      "date": "2024-06-04",
+      "cost": 10000,
+      "category": "의료비",
+      "income": false,
+      "memo": "감기"
+    },
+    {
+      "id": "c824",
+      "uid": "1",
+      "date": "2024-06-12",
+      "cost": 10000,
+      "category": "의료비",
+      "income": false,
+      "memo": "의료비"
+    },
+    {
+      "id": "72fb",
+      "uid": "1",
+      "date": "2024-05-02",
+      "cost": 10000,
+      "category": "의료비",
+      "income": false,
+      "memo": "의료비"
+    },
+    {
+      "id": "aef8",
+      "uid": "1",
+      "date": "2024-05-19",
+      "cost": 10000,
+      "category": "문화생활",
+      "income": false,
+      "memo": "영화"
+    },
+    {
+      "id": "ccad",
+      "uid": "1",
+      "date": "2024-04-09",
+      "cost": 20000,
+      "category": "쇼핑",
+      "income": false,
+      "memo": "옷"
+    },
+    {
+      "id": "97c6",
+      "uid": "1",
+      "date": "2024-04-03",
+      "cost": 20000,
+      "category": "교통비",
+      "income": false,
+      "memo": "지하철"
+    },
+    {
+      "id": "9b72",
+      "uid": "1",
+      "date": "2024-04-23",
+      "cost": 20000,
+      "category": "여행",
+      "income": false,
+      "memo": "유럽"
+    },
+    {
+      "id": "055a",
+      "uid": "1",
+      "date": "2024-03-10",
+      "cost": 30000,
+      "category": "여행",
+      "income": false,
+      "memo": "서울"
     }
   ]
 }

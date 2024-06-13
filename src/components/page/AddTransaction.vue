@@ -32,6 +32,7 @@
             <button @click="addTransaction(); $emit('close')">Create</button>
             <button @click="$emit('close')">Close</button>
         </p>
+        {{ this.chartData }}
     </div>
 </template>
 
@@ -40,6 +41,12 @@ import axios from "axios";
 
 export default {
     name: "AddTransaction",
+    props: {
+        chartData: {
+            type: Array,
+            required: true
+        }
+    },
     data() {
         return {
             date: "",
@@ -67,11 +74,39 @@ export default {
             })
                 .then((res) => {
                     console.log(res.data);
+                    this.updateChartData();
+                    this.updateTableData();
                 })
                 .catch((err) => {
                     console.log(err);
                 })
         },
+        updateChartData() {
+            // let updatedData = [...this.chartData]
+            // // console.log(updatedData)
+            // if (!updatedData[this.category]) {
+            //     updatedData.push({ "category": this.category, "value": this.cost })
+            // } else {
+            //     this.updatedData.map(item => {
+            //         if (item.category === this.category) {
+            //             item.value + this.cost
+            //         }
+            //     });
+            // }
+            let updatedData = { "category": this.category, "value": this.cost };
+
+            this.$emit('update:chartData', updatedData);
+        },
+        updateTableData() {
+            let tableData = {
+                category: this.category,
+                cost: this.cost,  // 새로운 비용을 배열에 추가
+                category_total: this.category_total + this.cost  // 기존 총 비용에 새 비용을 더함
+            };
+
+            this.$emit('update:tableData', tableData);
+
+        }
     }
 }
 </script>

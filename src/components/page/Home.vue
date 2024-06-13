@@ -1,6 +1,6 @@
 <template>
 
-    <br/>
+    <br />
     <div>
         <div class="calendar-container">
             <button @click="changeMonth(-1)">〈</button>
@@ -18,14 +18,15 @@
 
         <div class="modal-wrap" v-show="modalCheck">
             <div class="modal-container">
-                <AddTransaction @close="modalOpen" />
+                <AddTransaction @close="modalOpen" @update:chartData="updateChartData"
+                    @update:tableData="updateTableData" />
             </div>
         </div>
 
         <div>
             <PieChart v-if="categoryData.length > 0" :chartData="categoryData" />
             <br /><br />
-            <TransactionTable :data="category" :total_expend="calc(category)" />
+            <TransactionTable :data="category" :total_expend="totalExpenditure" />
         </div>
     </div>
 </template>
@@ -56,6 +57,10 @@ export default {
             const options = { year: 'numeric', month: 'long' };
             return new Date(this.currentYear, this.currentMonth - 1).toLocaleDateString('ko-KR', options);
         }
+        ,
+        totalExpenditure() {
+            return this.calc(this.category);
+        }
     },
     data() {
         return {
@@ -66,6 +71,7 @@ export default {
             category: [],
             items: [],
             modalCheck: false,
+            intervalId: null
         };
     },
     watch: {
@@ -74,6 +80,7 @@ export default {
     },
     mounted() {
         this.fetchData();
+
     },
     methods: {
         async fetchData() {
@@ -81,7 +88,7 @@ export default {
                 const response = await axios.get('http://localhost:3001/account');
                 const cookieId = this.$cookies.get('id');
                 const data = response.data.filter(item => item.uid == cookieId);
-                
+
 
                 // 이번 달 데이터 필터링
                 const filteredData = data.filter(item => {
@@ -142,7 +149,7 @@ export default {
                 if (!cur.income) {
                     const categoryIndex = acc.findIndex(item => item.category === cur.category);
                     if (categoryIndex === -1) {
-                        acc.push({ category: cur.category, cost: [cur.cost], category_total: cur.cost });
+                        acc.push({ category: cur.category,cost:[cur.cost],  category_total: cur.cost });
                     } else {
                         acc[categoryIndex].cost.push(cur.cost);
                         acc[categoryIndex].category_total += cur.cost;
@@ -150,7 +157,7 @@ export default {
                 }
                 return acc;
             }, []);
-
+        
             return res;
         },
         calc(s) {
@@ -164,9 +171,50 @@ export default {
         },
         modalOpen() {
             this.modalCheck = !this.modalCheck
-        }
+        },
+        updateChartData(updatedData) {
+            console.log("들어온값: " + updatedData)
+            let found = false;
+            this.categoryData.forEach(item => {
+                if (item.category == updatedData.category) {
+                    item.value += updatedData.value;
+                    found = true;
+                }
+            });
+            if (!found) {
+                this.categoryData.push(updatedData)
+            }
+
+            console.log("최종값: " + this.categoryData)
+        },
+        updateTableData(newData) {
+            console.log("table data input : ", newData);
+            // 이미 존재하는 카테고리인지 확인하여 업데이트 또는 추가
+            let found = false;
+            this.category.forEach(item => {
+                if (item.category == newData.category) {
+                    item.cost.push(newData.cost);
+                    item.category_total += newData.cost;
+                    found = true;
+                }
+            });
+
+            if (!found) {
+                this.category.push({
+                    category: newData.category,
+                    cost: [newData.cost],
+                    category_total: newData.cost
+                });
+            }
+
+            console.log("Updated category data: ", this.category);
+            this.$emit('updateTableData', this.category); // 이벤트 발생
+        },
+
+
     },
 };
+
 </script>
 
 
@@ -241,13 +289,13 @@ export default {
 
 button {
 
-  background: none;
-  border: none;
-  color: #aaa;
-  text-align: center;
-  font-size: 24px;
-  cursor: pointer;
-  margin: 0 20px;
+    background: none;
+    border: none;
+    color: #aaa;
+    text-align: center;
+    font-size: 24px;
+    cursor: pointer;
+    margin: 0 20px;
 }
 
 button:hover {
