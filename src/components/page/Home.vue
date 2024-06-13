@@ -1,5 +1,6 @@
 <template>
-    <br />
+
+    <br/>
     <div>
         <div class="calendar-container">
             <button @click="changeMonth(-1)">〈</button>
@@ -28,6 +29,7 @@
         </div>
     </div>
 </template>
+
 
 <script>
 import axios from 'axios';
@@ -176,6 +178,14 @@ export default {
     padding: 20px;
 }
 
+/*
+.year-month-selector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}*/
+
 .year-display,
 .month-display {
     display: flex;
@@ -230,18 +240,20 @@ export default {
 }
 
 button {
-    background: none;
-    border: none;
-    color: #aaa;
-    text-align: center;
-    font-size: 24px;
-    cursor: pointer;
-    margin: 0 20px;
+
+  background: none;
+  border: none;
+  color: #aaa;
+  text-align: center;
+  font-size: 24px;
+  cursor: pointer;
+  margin: 0 20px;
 }
 
 button:hover {
     color: #aaaaaa88;
 }
+
 
 .modal-wrap {
     position: fixed;
@@ -251,6 +263,7 @@ button:hover {
     height: 100%;
     background: rgba(0, 0, 0, 0.4);
 }
+
 
 .modal-container {
     position: relative;
