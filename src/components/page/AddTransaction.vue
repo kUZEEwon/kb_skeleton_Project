@@ -7,7 +7,7 @@
         </div>
         <div class="input-group">
             <label for="cost">Cost</label><br>
-            <input id="cost" class="inputVal" v-model.trim="cost" type="number" placeholder="Enter the Cost" />
+            <input id="cost" class="inputVal" v-model.trim="cost" type="number" min="0" placeholder="Enter the Cost" />
         </div>
         <div class="input-group">
             <label for="category">Category</label><br>
