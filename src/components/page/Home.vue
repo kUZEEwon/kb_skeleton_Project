@@ -82,45 +82,6 @@ export default {
   mounted() {
     this.fetchData();
   },
-  methods: {
-    async fetchData() {
-      try {
-        const response = await axios.get('http://localhost:3001/account');
-        const data = response.data;
-        const cookieId = this.$cookies.get('id');
-
-        // 이번 달 데이터 필터링
-        const filteredData = data.filter(item => {
-          const date = new Date(item.date);
-          return date.getFullYear() === this.currentYear && date.getMonth() + 1 === this.currentMonth;
-        });
-
-        // 이전 달 데이터 필터링
-        const previousMonth = this.currentMonth === 1 ? 12 : this.currentMonth - 1;
-        const previousYear = this.currentMonth === 1 ? this.currentYear - 1 : this.currentYear;
-        const filteredPrevMonthData = data.filter(item => {
-          const date = new Date(item.date);
-          return date.getFullYear() === previousYear && date.getMonth() + 1 === previousMonth;
-        });
-
-        this.transactionData = filteredData;
-        this.items = data;
-
-        // store의 fetchData 액션 호출
-        await useAccountStore().fetchData(filteredData, filteredPrevMonthData);
-        useAccountStore().setItems(data.filter(item => item.uid == cookieId));
-
-        this.updateCategoryData(filteredData);
-        this.category = this.reduceByCategory(filteredData);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    },
-
-    mounted() {
-        this.fetchData();
-
-    },
     methods: {
         async fetchData() {
             try {
