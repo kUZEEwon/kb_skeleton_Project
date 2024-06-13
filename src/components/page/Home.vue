@@ -29,6 +29,7 @@
             <TransactionTable :data="category" :total_expend="totalExpenditure" />
         </div>
     </div>
+
 </template>
 
 
@@ -40,13 +41,13 @@ import AddTransaction from '@/components/page/AddTransaction.vue';
 import { useAccountStore } from '@/store/store.js';
 
 export default {
-    name: 'HomeView',
-    components: {
-        PieChart,
-        TransactionTable,
-        AddTransaction,
-    },
-    computed: {
+  name: 'HomeView',
+  components: {
+    PieChart,
+    TransactionTable,
+    AddTransaction,
+  },
+  computed: {
         prevMonthLabel() {
             return (this.currentMonth === 1 ? 12 : this.currentMonth - 1) + "월";
         },
@@ -74,10 +75,48 @@ export default {
             intervalId: null
         };
     },
-    watch: {
-        currentYear: 'fetchData',
-        currentMonth: 'fetchData'
+  watch: {
+    currentYear: 'fetchData',
+    currentMonth: 'fetchData'
+  },
+  mounted() {
+    this.fetchData();
+  },
+  methods: {
+    async fetchData() {
+      try {
+        const response = await axios.get('http://localhost:3001/account');
+        const data = response.data;
+        const cookieId = this.$cookies.get('id');
+
+        // 이번 달 데이터 필터링
+        const filteredData = data.filter(item => {
+          const date = new Date(item.date);
+          return date.getFullYear() === this.currentYear && date.getMonth() + 1 === this.currentMonth;
+        });
+
+        // 이전 달 데이터 필터링
+        const previousMonth = this.currentMonth === 1 ? 12 : this.currentMonth - 1;
+        const previousYear = this.currentMonth === 1 ? this.currentYear - 1 : this.currentYear;
+        const filteredPrevMonthData = data.filter(item => {
+          const date = new Date(item.date);
+          return date.getFullYear() === previousYear && date.getMonth() + 1 === previousMonth;
+        });
+
+        this.transactionData = filteredData;
+        this.items = data;
+
+        // store의 fetchData 액션 호출
+        await useAccountStore().fetchData(filteredData, filteredPrevMonthData);
+        useAccountStore().setItems(data.filter(item => item.uid == cookieId));
+
+        this.updateCategoryData(filteredData);
+        this.category = this.reduceByCategory(filteredData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
     },
+
     mounted() {
         this.fetchData();
 
@@ -210,8 +249,6 @@ export default {
             console.log("Updated category data: ", this.category);
             this.$emit('updateTableData', this.category); // 이벤트 발생
         },
-
-
     },
 };
 
@@ -221,9 +258,9 @@ export default {
 
 <style scoped>
 .balance-info {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
 }
 
 /*
@@ -236,26 +273,26 @@ export default {
 
 .year-display,
 .month-display {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
 }
 
 .arrow-button {
-    background: none;
-    border: none;
-    font-size: 16px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
 }
 
 .arrow-button i {
-    margin: 0 5px;
+  margin: 0 5px;
 }
 
 .arrow-button:hover {
-    color: #007bff;
+  color: #007bff;
 }
 
 .calendar-container {

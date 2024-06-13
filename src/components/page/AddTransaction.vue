@@ -75,7 +75,9 @@ export default {
                 .then((res) => {
                     console.log(res.data);
                     this.updateChartData();
+
                     this.updateTableData();
+
                 })
                 .catch((err) => {
                     console.log(err);
@@ -96,6 +98,7 @@ export default {
             let updatedData = { "category": this.category, "value": this.cost };
 
             this.$emit('update:chartData', updatedData);
+
         },
         updateTableData() {
             let tableData = {
