@@ -104,7 +104,7 @@
       "date": "2024-06-10",
       "cost": 2000,
       "category": "급여",
-      "income": false,
+      "income": true,
       "memo": "user2 6월 급여"
     },
     {
@@ -259,7 +259,6 @@
       "category": "쇼핑",
       "income": false,
       "memo": "12345"
-
     },
     {
       "id": "649d",
@@ -341,7 +340,15 @@
       "category": "여행",
       "income": false,
       "memo": "서울"
-
+    },
+    {
+      "id": "af91",
+      "uid": "2",
+      "date": "2024-06-01",
+      "cost": 11000,
+      "category": "여행",
+      "income": false,
+      "memo": "여행"
     }
   ]
 }

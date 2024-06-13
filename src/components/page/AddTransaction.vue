@@ -1,39 +1,37 @@
 <template>
-    <div>
-        <h3>거래내역 추가</h3>
-        <p>
-            Date <br>
-            <input class="inputVal" v-model.trim="date" type="date" placeholder="Enter your First Name" />
-        </p>
-        <p>
-            Cost <br>
-            <input class="inputVal" v-model.trim="cost" type="number" placeholder="Enter your Last Name" />
-        </p>
-        <p>
-            Category <br>
-            <select class="inputVal" v-model="category">
-                <option value="" default disabled>선택</option>
-                <option v-for="category in categorys" :key="category.index">
-                    {{ category }}
-                </option>
+    <div class="user-info-container">
+        <h3>Modal</h3>
+        <div class="input-group">
+            <label for="date">Date</label><br>
+            <input id="date" class="inputVal" v-model.trim="date" type="date" placeholder="Enter the Date" />
+        </div>
+        <div class="input-group">
+            <label for="cost">Cost</label><br>
+            <input id="cost" class="inputVal" v-model.trim="cost" type="number" placeholder="Enter the Cost" />
+        </div>
+        <div class="input-group">
+            <label for="category">Category</label><br>
+            <select id="category" class="inputVal" v-model="category">
+                <option value="" disabled selected>Choose</option>
+                <option v-for="(category, index) in categorys" :key="index">{{ category }}</option>
             </select>
-        </p>
-        <p>
-            Income <br>
-            <select class="inputVal" v-model="income">
+        </div>
+        <div class="input-group">
+            <label for="income">Income</label><br>
+            <select id="income" class="inputVal" v-model="income">
                 <option value="true">수입</option>
                 <option value="false">지출</option>
             </select>
-        </p>
-        <p>
-            Memo <br>
-            <textarea v-model="memo" cols="30" rows="1"></textarea>
-        </p>
-        <p class="button-group">
+        </div>
+        <div class="input-group">
+            <label for="memo">Memo</label><br>
+            <textarea id="memo" v-model="memo" rows="3"></textarea>
+        </div>
+        <div class="button-group">
             <button @click="addTransaction(); close(); sendNewData()" v-bind:disabled="!checkVal">Create</button>
             <button @click="close()">Close</button>
-        </p>
-        {{ this.chartData }}
+        </div>
+        <!-- {{ this.chartData }} -->
     </div>
 </template>
 
@@ -155,40 +153,55 @@ export default {
 </script>
 
 <style scoped>
-p {
-    height: 60px;
-}
-input {
-    color: #222222;
-    border: none;
-    border-bottom: solid #aaaaaa 1px;
-    position: relative;
-    background: none;
-    z-index: 5;
+.user-info-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
 }
 
-select {
-    color: #222222;
-    border: none;
-    border-bottom: solid #aaaaaa 1px;
-    position: relative;
-    background: none;
-    z-index: 5;
+h3 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.5em;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.input-group input[type="date"],
+.input-group input[type="number"],
+.input-group select,
+.input-group textarea {
+    width: 100%;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
 
 .button-group {
     text-align: center;
     margin-bottom: 0px;
-    /* margin-top: 20px; */
+    margin-top: 20px;
 }
 
 .button-group button {
     padding: 10px 20px;
-    margin: 5px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     font-size: 14px;
+    margin: 0 5px;
 }
 
 .button-group button:first-of-type {

@@ -4,8 +4,9 @@
     <div class="calendar-container">
         <VDatePicker expanded v-model="date" mode="date" :attributes="attrs" @dayclick="onDayClick()" />
     </div>
+    <br/>
 
-    <div class="add-transaction-button">
+    <div class="add-transaction-button" style="text-align: center;">
         <!-- <p>상세내역</p> -->
         <button @click="modalOpen">
             내역 추가
@@ -17,7 +18,7 @@
             </div>
         </div>
     </div>
-
+    <br/>
     <div class="table-container">
         <table v-if="selectDayData.transaction.length !== 0">
             <thead>
