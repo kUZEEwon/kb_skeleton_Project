@@ -32,6 +32,7 @@
             <button @click="addTransaction()">Create</button>
             <button @click="$emit('close', false)">Close</button>
         </p>
+        {{ this.chartData }}
     </div>
 </template>
 
@@ -40,6 +41,12 @@ import axios from "axios";
 
 export default {
     name: "AddTransaction",
+    props: {
+        chartData: {
+            type: Array,
+            required: true
+        }
+    },
     data() {
         return {
             date: "",
@@ -66,7 +73,12 @@ export default {
                 "memo": this.memo
             })
                 .then((res) => {
-                    console.log(res.data);
+                    // console.log(res.data);
+                    // this.chartData.forEach(item => {
+                    //     if (item.category == this.category) {
+                    //         item.value += this.cost;
+                    //     }
+                    // })
                 })
                 .catch((err) => {
                     console.log(err);

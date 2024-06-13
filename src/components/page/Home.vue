@@ -1,33 +1,33 @@
 <template>
-    <br/>
-    <div>
-      <div class="calendar-container">
-        <button @click="changeMonth(-1)">〈</button>
-        <span>{{ formattedDate }}</span>
-        <button @click="changeMonth(1)">〉</button>
-      </div>
-  
-      <!-- 내역 추가 버튼을 이 부분에 배치 -->
-      <div class="add-transaction-button">
+  <br />
+  <div>
+    <div class="calendar-container">
+      <button @click="changeMonth(-1)">〈</button>
+      <span>{{ formattedDate }}</span>
+      <button @click="changeMonth(1)">〉</button>
+    </div>
+
+    <!-- 내역 추가 버튼을 이 부분에 배치 -->
+    <div class="add-transaction-button">
       <button @click="modalOpen">
         내역 추가
       </button>
     </div>
-    <br/>
-  
-      <div class="modal-wrap" v-show="modalCheck">
-        <div class="modal-container">
-          <AddTransaction @close="modalOpen"/>
-        </div>
-      </div>
-  
-      <div>
-        <PieChart v-if="categoryData.length > 0" :chartData="categoryData" />
-        <br/><br/>
-        <TransactionTable :data="category" :total_expend="calc(category)" />
+    <br />
+
+    <div class="modal-wrap" v-show="modalCheck">
+      <div class="modal-container">
+        <AddTransaction @close="modalOpen" :chartData="categoryData" />
       </div>
     </div>
-  </template>
+
+    <div>
+      <PieChart v-if="categoryData.length > 0" :chartData="categoryData" />
+      <br /><br />
+      <TransactionTable :data="category" :total_expend="calc(category)" />
+    </div>
+  </div>
+</template>
 
 <script>
 import axios from 'axios';
@@ -38,136 +38,136 @@ import { useAccountStore } from '@/store/store.js';
 import { computed } from 'vue';
 
 export default {
-    name: 'HomeView',
-    components: {
-        PieChart,
-        TransactionTable,
-        AddTransaction,
+  name: 'HomeView',
+  components: {
+    PieChart,
+    TransactionTable,
+    AddTransaction,
+  },
+  computed: {
+    prevMonthLabel() {
+      return (this.currentMonth === 1 ? 12 : this.currentMonth - 1) + "월";
     },
-    computed: {
-        prevMonthLabel() {
-            return (this.currentMonth === 1 ? 12 : this.currentMonth - 1) + "월";
-        },
-        nextMonthLabel() {
-            return (this.currentMonth === 12 ? 1 : this.currentMonth + 1) + "월";
-        },
-        formattedDate() {
-            const options = { year: 'numeric', month: 'long' };
-            return new Date(this.currentYear, this.currentMonth - 1).toLocaleDateString('ko-KR', options);
+    nextMonthLabel() {
+      return (this.currentMonth === 12 ? 1 : this.currentMonth + 1) + "월";
+    },
+    formattedDate() {
+      const options = { year: 'numeric', month: 'long' };
+      return new Date(this.currentYear, this.currentMonth - 1).toLocaleDateString('ko-KR', options);
+    }
+    /* expenseDifference() {
+        return useAccountStore().expenseDifference; // store에서 expenseDifference 가져오기
+    },
+    currentBalance() {
+        return useAccountStore().currentBalance;
+    } */
+  },
+  data() {
+    return {
+      currentYear: new Date().getFullYear(),
+      currentMonth: new Date().getMonth() + 1,
+      categoryData: [],
+      transactionData: [],
+      category: [],
+      items: [],
+      modalCheck: false,
+    };
+  },
+  watch: {
+    currentYear: 'fetchData',
+    currentMonth: 'fetchData'
+  },
+  mounted() {
+    this.fetchData();
+  },
+  methods: {
+    async fetchData() {
+      try {
+        const response = await axios.get('http://localhost:3001/account');
+        const data = response.data;
+        const cookieId = this.$cookies.get('id');
+
+        // 이번 달 데이터 필터링
+        const filteredData = data.filter(item => {
+          const date = new Date(item.date);
+          return date.getFullYear() === this.currentYear && date.getMonth() + 1 === this.currentMonth;
+        });
+
+        // 이전 달 데이터 필터링
+        const previousMonth = this.currentMonth === 1 ? 12 : this.currentMonth - 1;
+        const previousYear = this.currentMonth === 1 ? this.currentYear - 1 : this.currentYear;
+        const filteredPrevMonthData = data.filter(item => {
+          const date = new Date(item.date);
+          return date.getFullYear() === previousYear && date.getMonth() + 1 === previousMonth;
+        });
+
+        this.transactionData = filteredData;
+        this.items = data;
+
+        // store의 fetchData 액션 호출
+        await useAccountStore().fetchData(filteredData, filteredPrevMonthData);
+        useAccountStore().setItems(data.filter(item => item.uid == cookieId));
+
+        this.updateCategoryData(filteredData);
+        this.category = this.reduceByCategory(filteredData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    },
+    updateCategoryData(data) {
+      const categories = {};
+      data.forEach(item => {
+        if (!item.income) {
+          if (!categories[item.category]) {
+            categories[item.category] = 0;
+          }
+          categories[item.category] += item.cost;
         }
-        /* expenseDifference() {
-            return useAccountStore().expenseDifference; // store에서 expenseDifference 가져오기
-        },
-        currentBalance() {
-            return useAccountStore().currentBalance;
-        } */
+      });
+      this.categoryData = Object.keys(categories).map(key => ({ category: key, value: categories[key] }));
     },
-    data() {
-        return {
-            currentYear: new Date().getFullYear(),
-            currentMonth: new Date().getMonth() + 1,
-            categoryData: [],
-            transactionData: [],
-            category: [],
-            items: [],
-            modalCheck: false,
-        };
+    changeYear(offset) {
+      this.currentYear += offset;
     },
-    watch: {
-        currentYear: 'fetchData',
-        currentMonth: 'fetchData'
+    changeMonth(offset) {
+      this.currentMonth += offset;
+      if (this.currentMonth > 12) {
+        this.currentMonth = 1;
+        this.changeYear(1);
+      } else if (this.currentMonth < 1) {
+        this.currentMonth = 12;
+        this.changeYear(-1);
+      }
     },
-    mounted() {
-        this.fetchData();
-    },
-    methods: {
-        async fetchData() {
-            try {
-                const response = await axios.get('http://localhost:3001/account');
-                const data = response.data;
-                const cookieId = this.$cookies.get('id');
-
-                // 이번 달 데이터 필터링
-                const filteredData = data.filter(item => {
-                    const date = new Date(item.date);
-                    return date.getFullYear() === this.currentYear && date.getMonth() + 1 === this.currentMonth;
-                });
-
-                // 이전 달 데이터 필터링
-                const previousMonth = this.currentMonth === 1 ? 12 : this.currentMonth - 1;
-                const previousYear = this.currentMonth === 1 ? this.currentYear - 1 : this.currentYear;
-                const filteredPrevMonthData = data.filter(item => {
-                    const date = new Date(item.date);
-                    return date.getFullYear() === previousYear && date.getMonth() + 1 === previousMonth;
-                });
-
-                this.transactionData = filteredData;
-                this.items = data;
-
-                // store의 fetchData 액션 호출
-                await useAccountStore().fetchData(filteredData, filteredPrevMonthData);
-                useAccountStore().setItems(data.filter(item => item.uid == cookieId));
-
-                this.updateCategoryData(filteredData);
-                this.category = this.reduceByCategory(filteredData);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        },
-        updateCategoryData(data) {
-            const categories = {};
-            data.forEach(item => {
-                if (!item.income) {
-                    if (!categories[item.category]) {
-                        categories[item.category] = 0;
-                    }
-                    categories[item.category] += item.cost;
-                }
-            });
-            this.categoryData = Object.keys(categories).map(key => ({ category: key, value: categories[key] }));
-        },
-        changeYear(offset) {
-            this.currentYear += offset;
-        },
-        changeMonth(offset) {
-            this.currentMonth += offset;
-            if (this.currentMonth > 12) {
-                this.currentMonth = 1;
-                this.changeYear(1);
-            } else if (this.currentMonth < 1) {
-                this.currentMonth = 12;
-                this.changeYear(-1);
-            }
-        },
-        reduceByCategory(d) {
-            const res = d.reduce((acc, cur) => {
-                if (!cur.income) {
-                    const categoryIndex = acc.findIndex(item => item.category === cur.category);
-                    if (categoryIndex === -1) {
-                        acc.push({ category: cur.category, cost: [cur.cost], category_total: cur.cost });
-                    } else {
-                        acc[categoryIndex].cost.push(cur.cost);
-                        acc[categoryIndex].category_total += cur.cost;
-                    }
-                }
-                return acc;
-            }, []);
-
-            return res;
-        },
-        calc(s) {
-            const res = s.reduce((acc, cur) => {
-                return acc + cur.category_total;
-            }, 0);
-            return res
-        },
-        addTransaction() {
-            this.modalcheck = true;
-        },
-        modalOpen() {
-            this.modalCheck = !this.modalCheck
+    reduceByCategory(d) {
+      const res = d.reduce((acc, cur) => {
+        if (!cur.income) {
+          const categoryIndex = acc.findIndex(item => item.category === cur.category);
+          if (categoryIndex === -1) {
+            acc.push({ category: cur.category, cost: [cur.cost], category_total: cur.cost });
+          } else {
+            acc[categoryIndex].cost.push(cur.cost);
+            acc[categoryIndex].category_total += cur.cost;
+          }
         }
+        return acc;
+      }, []);
+
+      return res;
     },
+    calc(s) {
+      const res = s.reduce((acc, cur) => {
+        return acc + cur.category_total;
+      }, 0);
+      return res
+    },
+    addTransaction() {
+      this.modalcheck = true;
+    },
+    modalOpen() {
+      this.modalCheck = !this.modalCheck
+    }
+  },
 };
 </script>
 

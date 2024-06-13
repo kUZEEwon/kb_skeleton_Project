@@ -232,6 +232,15 @@
       "category": "용돈",
       "income": true,
       "memo": "야미"
+    },
+    {
+      "id": "6d6e",
+      "uid": "1",
+      "date": "2024-06-13",
+      "cost": 1111,
+      "category": "쇼핑",
+      "income": false,
+      "memo": "12321"
     }
   ]
 }
