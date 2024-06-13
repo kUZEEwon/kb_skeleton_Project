@@ -99,6 +99,15 @@
       "memo": "청소기 구매"
     },
     {
+      "id": "4b",
+      "uid": 2,
+      "date": "2024-06-10",
+      "cost": 2000,
+      "category": "급여",
+      "income": false,
+      "memo": "user2 6월 급여"
+    },
+    {
       "id": "5",
       "uid": 1,
       "date": "2024-06-10",
@@ -234,15 +243,6 @@
       "memo": "야미"
     },
     {
-<<<<<<< HEAD
-      "id": "6d6e",
-      "uid": "1",
-      "date": "2024-06-13",
-      "cost": 1111,
-      "category": "쇼핑",
-      "income": false,
-      "memo": "12321"
-=======
       "id": "bb5b",
       "uid": "1",
       "date": "2024-06-12",
@@ -259,7 +259,89 @@
       "category": "쇼핑",
       "income": false,
       "memo": "12345"
->>>>>>> 2a4d646e68f8c6adef194b169d2b02838bff5530
+
+    },
+    {
+      "id": "649d",
+      "uid": "1",
+      "date": "2024-06-04",
+      "cost": 10000,
+      "category": "의료비",
+      "income": false,
+      "memo": "아파요"
+    },
+    {
+      "id": "1347",
+      "uid": "1",
+      "date": "2024-06-04",
+      "cost": 10000,
+      "category": "의료비",
+      "income": false,
+      "memo": "감기"
+    },
+    {
+      "id": "c824",
+      "uid": "1",
+      "date": "2024-06-12",
+      "cost": 10000,
+      "category": "의료비",
+      "income": false,
+      "memo": "의료비"
+    },
+    {
+      "id": "72fb",
+      "uid": "1",
+      "date": "2024-05-02",
+      "cost": 10000,
+      "category": "의료비",
+      "income": false,
+      "memo": "의료비"
+    },
+    {
+      "id": "aef8",
+      "uid": "1",
+      "date": "2024-05-19",
+      "cost": 10000,
+      "category": "문화생활",
+      "income": false,
+      "memo": "영화"
+    },
+    {
+      "id": "ccad",
+      "uid": "1",
+      "date": "2024-04-09",
+      "cost": 20000,
+      "category": "쇼핑",
+      "income": false,
+      "memo": "옷"
+    },
+    {
+      "id": "97c6",
+      "uid": "1",
+      "date": "2024-04-03",
+      "cost": 20000,
+      "category": "교통비",
+      "income": false,
+      "memo": "지하철"
+    },
+    {
+      "id": "9b72",
+      "uid": "1",
+      "date": "2024-04-23",
+      "cost": 20000,
+      "category": "여행",
+      "income": false,
+      "memo": "유럽"
+    },
+    {
+      "id": "055a",
+      "uid": "1",
+      "date": "2024-03-10",
+      "cost": 30000,
+      "category": "여행",
+      "income": false,
+      "memo": "서울"
+
     }
   ]
 }
