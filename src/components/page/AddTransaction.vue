@@ -66,11 +66,8 @@ export default {
             checkVal: false,
         }
     },
-    updated() {
-        console.log("updated");
-    },
     beforeUnmount() {
-        console.log("before Unmount");
+        // console.log("before Unmount");
     },
     watch: {
         'date': function () {
