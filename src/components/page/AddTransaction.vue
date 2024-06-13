@@ -2,29 +2,29 @@
     <div class="user-info-container">
         <h3>거래내역 추가</h3>
         <div class="input-group">
-            <label for="date">Date</label><br>
+            <label for="date">날짜</label><br>
             <input id="date" class="inputVal" v-model.trim="date" type="date" placeholder="Enter the Date" />
         </div>
         <div class="input-group">
-            <label for="cost">Cost</label><br>
+            <label for="cost">금액</label><br>
             <input id="cost" class="inputVal" v-model.trim="cost" type="number" min="0" placeholder="Enter the Cost" />
         </div>
         <div class="input-group">
-            <label for="category">Category</label><br>
+            <label for="category">카테고리</label><br>
             <select id="category" class="inputVal" v-model="category">
                 <option value="" disabled selected>Choose</option>
                 <option v-for="(category, index) in categorys" :key="index">{{ category }}</option>
             </select>
         </div>
         <div class="input-group">
-            <label for="income">Income</label><br>
+            <label for="income">수입/지출</label><br>
             <select id="income" class="inputVal" v-model="income">
                 <option value="true">수입</option>
                 <option value="false">지출</option>
             </select>
         </div>
         <div class="input-group">
-            <label for="memo">Memo</label><br>
+            <label for="memo">메모</label><br>
             <textarea id="memo" v-model="memo" rows="3"></textarea>
         </div>
         <div class="button-group">
@@ -205,7 +205,7 @@ h3 {
 }
 
 .button-group button:first-of-type {
-    background-color: #007bff;
+    background-color: #0073cf;
     color: white;
 }
 

@@ -24,10 +24,10 @@
             <thead>
                 <tr>
                     <th><input type="checkbox" value="all" v-model="allChecked" :disabled="updating"></th>
-                    <th>Category</th>
-                    <th>Cost</th>
-                    <th>Income</th>
-                    <th>Memo</th>
+                    <th>카테고리</th>
+                    <th>금액</th>
+                    <th>수입/지출</th>
+                    <th>메모</th>
                 </tr>
             </thead>
             <tbody>
@@ -53,7 +53,7 @@
                         </select>
                     </td> -->
                     <!-- <td v-else>{{ data.income ? 'Income' : 'Expense' }}</td> -->
-                    <td>{{ data.income }}</td>
+                    <td>{{ data.income ? '수입':'지출' }}</td>
                     <td v-if="checkId(data.id) && updating">
                         <input type="text" v-model="data.memo">
                     </td>
@@ -264,7 +264,7 @@ h3 {
 }
 
 thead {
-    background-color: #007bff;
+    background-color: #0073cf;
     color: white;
 }
 
@@ -311,7 +311,7 @@ select {
 }
 
 .button-group button:first-of-type {
-    background-color: #007bff;
+    background-color: #0073cf;
     color: white;
 }
 
