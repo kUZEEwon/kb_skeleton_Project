@@ -8,8 +8,6 @@
                     <li><router-link to="/admin/calendar">Calendar</router-link></li>
                 </ul>
             </nav>
-
-
             <!-- <VDatePicker v-model="date" is-dark="system">
             <template #default="{ togglePopover }">
                 <button class="px-3 py-2 bg-blue-500 text-sm text-white font-semibold rounded-md"
@@ -18,9 +16,10 @@
                 </button>
             </template>
 
-            </VDatePicker> -->
+</VDatePicker> -->
 
-          <div class="userInfo">
+            <div class="userInfo">
+                <LogOutBtn />
                 <div class="username">
                     <!-- <p>{{ user.username }} 님 </p> -->
                     <router-link to="/admin/userinfo">{{ user.username }} 님 </router-link>
@@ -51,6 +50,8 @@
 <script>
 import { ref, computed } from 'vue';
 import { useAccountStore } from '@/store/store.js';
+import LogOutBtn from '../member/LogOutBtn.vue';
+
 
 export default {
     name: "Navbar",
@@ -60,6 +61,7 @@ export default {
             isOpened: false
         }
     },
+    components: { LogOutBtn, },
     methods: {
         toggleMenu() {
             this.isOpened = !this.isOpened

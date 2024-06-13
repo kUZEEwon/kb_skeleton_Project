@@ -49,7 +49,7 @@ export const useAccountStore = defineStore({
             this.user = userData;
         },
         clearUser() {
-            this.user = null;
+            this.user = {};
         },
     },
     
