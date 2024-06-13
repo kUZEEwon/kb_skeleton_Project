@@ -18,10 +18,9 @@
                 </button>
             </template>
 
-            </VDatePicker> -->
+</VDatePicker> -->
 
-          <div class="userInfo">
-            <LogOutBtn />
+            <div class="userInfo">
                 <div class="username">
                     <!-- <p>{{ user.username }} 님 </p> -->
                     <router-link to="/admin/userinfo">{{ user.username }} 님 </router-link>
@@ -30,6 +29,7 @@
                     <p>잔액 : {{ currentBalance }}</p>
                     <p>이전달 대비 지출: {{ expenseDifference }}</p>
                 </div>
+                <LogOutBtn class="logoutButton" />
             </div>
 
             <div id="hamburger-icon" :class="{ open: isOpened }" @click="toggleMenu">
@@ -178,7 +178,7 @@ p {
 .userInfo {
     display: flex;
     align-items: center;
-    margin-right: 20px;
+    /* margin-right: 20px; */
 }
 
 .username {
@@ -187,7 +187,11 @@ p {
 }
 
 .user-details {
-    margin-left: 10px; 
+    margin-left: 10px;
+}
+
+.logoutButton {
+    margin-left: 10px;
 }
 
 @media only screen and (max-width: 600px) {
