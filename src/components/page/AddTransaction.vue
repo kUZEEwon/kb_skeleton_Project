@@ -12,6 +12,7 @@
         <p>
             Category <br>
             <select class="inputVal" v-model="category">
+                <option value="" default disabled>선택</option>
                 <option v-for="category in categorys" :key="category.index">
                     {{ category }}
                 </option>
@@ -29,8 +30,8 @@
             <textarea v-model="memo" cols="30" rows="1"></textarea>
         </p>
         <p>
-            <button @click="addTransaction(); $emit('close')">Create</button>
-            <button @click="$emit('close')">Close</button>
+            <button @click="addTransaction(); close(); sendNewData()" v-bind:disabled="!checkVal">Create</button>
+            <button @click="close()">Close</button>
         </p>
         {{ this.chartData }}
     </div>
@@ -44,22 +45,58 @@ export default {
     props: {
         chartData: {
             type: Array,
-            required: true
+            // required: true
         }
     },
     data() {
         return {
+            // newData: {
+            //     "date": "",
+            //     "cost": 0,
+            //     "category": "",
+            //     "income": false,
+            //     "memo": "",
+            // },
             date: "",
             cost: 0,
             category: "",
             income: false,
             memo: "",
-            categorys: ["식비", "교통비", "쇼핑", "의료비", "여행", "취미", "문화생활", "전자기기"]
+            categorys: ["식비", "교통비", "쇼핑", "의료비", "여행", "취미", "문화생활", "전자기기"],
+            checkVal: false,
         }
+    },
+    watch: {
+        'date': function () {
+            this.checkVal = this.checkValue();
+        },
+        'cost': function () {
+            this.checkVal = this.checkValue();
+        },
+        'category': function () {
+            this.checkVal = this.checkValue();
+        },
     },
     methods: {
         close() {
             this.$emit('close');
+        },
+        sendNewData() {
+            const id = this.$cookies.get('id');
+            this.$emit('newData', {
+                "uid": id,
+                "date": this.date,
+                "cost": this.cost,
+                "category": this.category,
+                "income": this.income,
+                "memo": this.memo
+            });
+        },
+        checkValue() {
+            if (this.date != "" && this.category != "" && this.cost > 0) {
+                return true;
+            }
+            return false;
         },
         addTransaction() {
             const id = this.$cookies.get('id');
@@ -73,7 +110,7 @@ export default {
                 "memo": this.memo
             })
                 .then((res) => {
-                    console.log(res.data);
+                    // console.log(res.data);
                     this.updateChartData();
 
                     this.updateTableData();

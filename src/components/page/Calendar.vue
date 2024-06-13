@@ -1,15 +1,24 @@
 <template>
-    <br/><br/>
+    <br>
+    <h3>Calendar</h3>
     <div class="calendar-container">
-        <h3>Calendar</h3>
-        <VDatePicker 
-            expanded 
-            v-model="date" 
-            mode="date" 
-            :attributes="attrs" 
-            @dayclick="onDayClick()" 
-        />
+        <VDatePicker expanded v-model="date" mode="date" :attributes="attrs" @dayclick="onDayClick()" />
+    </div>
 
+    <div class="add-transaction-button">
+        <!-- <p>상세내역</p> -->
+        <button @click="modalOpen">
+            내역 추가
+        </button>
+
+        <div class="modal-wrap" v-show="modalCheck">
+            <div class="modal-container">
+                <AddTransaction @close="modalOpen" @newData="addTransaction" />
+            </div>
+        </div>
+    </div>
+
+    <div class="table-container">
         <table v-if="selectDayData.transaction.length !== 0">
             <thead>
                 <tr>
@@ -22,7 +31,8 @@
             </thead>
             <tbody>
                 <tr v-for="data in selectDayData.transaction" :key="data.id">
-                    <td><input type="checkbox" :id="data.id" :value="data.id" v-model="checked" :disabled="updating"></td>
+                    <td><input type="checkbox" :id="data.id" :value="data.id" v-model="checked" :disabled="updating">
+                    </td>
                     <td v-if="checkId(data.id) && updating">
                         <select v-model="data.category">
                             <option v-for="category in data.income ? incomeCategory : expendCategory" :key="category">
@@ -35,27 +45,31 @@
                         <input type="number" v-model="data.cost">
                     </td>
                     <td v-else>{{ data.cost }}</td>
-                    <td v-if="checkId(data.id) && updating">
+                    <!-- <td v-if="checkId(data.id) && updating">
                         <select v-model="data.income">
                             <option value="true">Income</option>
                             <option value="false">Expense</option>
                         </select>
-                    </td>
-                    <td v-else>{{ data.income ? 'Income' : 'Expense' }}</td>
+                    </td> -->
+                    <!-- <td v-else>{{ data.income ? 'Income' : 'Expense' }}</td> -->
+                    <td>{{ data.income }}</td>
                     <td v-if="checkId(data.id) && updating">
                         <input type="text" v-model="data.memo">
                     </td>
                     <td v-else>{{ data.memo }}</td>
                 </tr>
+            </tbody>
+            <tfoot>
                 <tr>
                     <td colspan="5" class="button-group">
                         <button v-if="!updating" @click="setUpdate" :disabled="checked.length === 0">Update</button>
-                        <button v-if="!updating" @click="deleteTransaction" :disabled="checked.length === 0">Delete</button>
                         <button v-else @click="updateTransaction">Save</button>
+                        <button v-if="!updating" @click="deleteTransaction"
+                            :disabled="checked.length === 0">Delete</button>
                         <button v-else @click="setUpdate">Cancel</button>
                     </td>
                 </tr>
-            </tbody>
+            </tfoot>
         </table>
     </div>
 </template>
@@ -63,6 +77,8 @@
 <script setup>
 import { onMounted, onBeforeUpdate, reactive, ref, computed, watch } from 'vue';
 import axios from 'axios';
+
+import AddTransaction from '@/components/page/AddTransaction.vue';
 
 const transactionData = reactive({ transaction: [] });
 const selectDayData = reactive({ transaction: [] });
@@ -90,6 +106,14 @@ onMounted(async () => {
     await fetchData();
     setAttrs();
     // console.log(transactionData.transaction);
+
+    onDayClick();
+    // 현재 선택 날짜 거래정보 추가
+    transactionData.transaction.filter(data => {
+        if (data.date == selectedDate) {
+            selectDayData.transaction.push(data);
+        }
+    });
 })
 
 onBeforeUpdate(() => {
@@ -110,6 +134,10 @@ watch(date, async () => {
     checked.value.splice(0);
     updating.value = false;
 })
+
+function addTransaction(data) {
+    transactionData.transaction.push(data);
+}
 
 function deleteTransaction() {
     checked.value.forEach(async (id) => {
@@ -195,6 +223,11 @@ const allChecked = computed({
     },
 })
 
+const modalCheck = ref(false);
+function modalOpen() {
+    modalCheck.value = !modalCheck.value
+}
+
 function two(n) {
     const str = String(n);
     return str.length < 2 ? "0" + str : str;
@@ -203,24 +236,30 @@ function two(n) {
 </script>
 
 <style scoped>
+h3 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
 .calendar-container {
-    max-width: 600px;
-    margin: 0 auto;
+    position: relative;
+    z-index: 0;
+    /* max-width: 600px; */
+    margin: 5px 10px;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 8px;
     background-color: #f9f9f9;
 }
 
-h3 {
-    text-align: center;
-    margin-bottom: 20px;
+.table-container {
+    margin: 5px 10px;
 }
 
-table {
+.table-container table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
+    /* margin-top: 20px; */
 }
 
 thead {
@@ -236,6 +275,24 @@ tbody td {
     padding: 10px;
     text-align: center;
     border: 1px solid #ccc;
+}
+
+input {
+    color: #222222;
+    border: none;
+    border-bottom: solid #aaaaaa 1px;
+    position: relative;
+    background: none;
+    z-index: 5;
+}
+
+select {
+    color: #222222;
+    border: none;
+    border-bottom: solid #aaaaaa 1px;
+    position: relative;
+    background: none;
+    z-index: 5;
 }
 
 .button-group {
@@ -260,5 +317,44 @@ tbody td {
 .button-group button:last-of-type {
     background-color: #28a745;
     color: white;
+}
+
+.modal-wrap {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.modal-container {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 550px;
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.add-transaction-button {
+    margin: 5px 10px;
+}
+
+.add-transaction-button button {
+    background-color: #0073cf;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.add-transaction-button button:hover {
+    background-color: #0c5db4;
 }
 </style>
