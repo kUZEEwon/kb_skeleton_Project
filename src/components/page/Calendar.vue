@@ -13,7 +13,7 @@
 
         <div class="modal-wrap" v-show="modalCheck">
             <div class="modal-container">
-                <AddTransaction @close="modalOpen" @newData="addTransaction()" />
+                <AddTransaction @close="modalOpen" @newData="addTransaction" />
             </div>
         </div>
     </div>
@@ -45,18 +45,21 @@
                         <input type="number" v-model="data.cost">
                     </td>
                     <td v-else>{{ data.cost }}</td>
-                    <td v-if="checkId(data.id) && updating">
+                    <!-- <td v-if="checkId(data.id) && updating">
                         <select v-model="data.income">
                             <option value="true">Income</option>
                             <option value="false">Expense</option>
                         </select>
-                    </td>
-                    <td v-else>{{ data.income ? 'Income' : 'Expense' }}</td>
+                    </td> -->
+                    <!-- <td v-else>{{ data.income ? 'Income' : 'Expense' }}</td> -->
+                    <td>{{ data.income }}</td>
                     <td v-if="checkId(data.id) && updating">
                         <input type="text" v-model="data.memo">
                     </td>
                     <td v-else>{{ data.memo }}</td>
                 </tr>
+            </tbody>
+            <tfoot>
                 <tr>
                     <td colspan="5" class="button-group">
                         <button v-if="!updating" @click="setUpdate" :disabled="checked.length === 0">Update</button>
@@ -66,7 +69,7 @@
                         <button v-else @click="setUpdate">Cancel</button>
                     </td>
                 </tr>
-            </tbody>
+            </tfoot>
         </table>
     </div>
 </template>
@@ -272,6 +275,24 @@ tbody td {
     padding: 10px;
     text-align: center;
     border: 1px solid #ccc;
+}
+
+input {
+    color: #222222;
+    border: none;
+    border-bottom: solid #aaaaaa 1px;
+    position: relative;
+    background: none;
+    z-index: 5;
+}
+
+select {
+    color: #222222;
+    border: none;
+    border-bottom: solid #aaaaaa 1px;
+    position: relative;
+    background: none;
+    z-index: 5;
 }
 
 .button-group {
