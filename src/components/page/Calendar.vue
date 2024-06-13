@@ -4,7 +4,7 @@
     <div class="calendar-container">
         <VDatePicker expanded v-model="date" mode="date" :attributes="attrs" @dayclick="onDayClick()" />
     </div>
-    <br/>
+    <!-- <br/> -->
 
     <div class="add-transaction-button" style="text-align: center;">
         <!-- <p>상세내역</p> -->
@@ -18,7 +18,7 @@
             </div>
         </div>
     </div>
-    <br/>
+    <br />
     <div class="table-container">
         <table v-if="selectDayData.transaction.length !== 0">
             <thead>
@@ -53,7 +53,7 @@
                         </select>
                     </td> -->
                     <!-- <td v-else>{{ data.income ? 'Income' : 'Expense' }}</td> -->
-                    <td>{{ data.income ? '수입':'지출' }}</td>
+                    <td>{{ data.income ? '수입' : '지출' }}</td>
                     <td v-if="checkId(data.id) && updating">
                         <input type="text" v-model="data.memo">
                     </td>
@@ -287,6 +287,12 @@ input {
     z-index: 5;
 }
 
+input:focus {
+    border: none;
+    border-bottom: solid #aaaaaa 1px;
+    outline: none;
+}
+
 select {
     color: #222222;
     border: none;
@@ -294,6 +300,12 @@ select {
     position: relative;
     background: none;
     z-index: 5;
+}
+
+select:focus {
+    border: none;
+    border-bottom: solid #aaaaaa 1px;
+    outline: none;
 }
 
 .button-group {
