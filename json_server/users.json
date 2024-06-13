@@ -259,7 +259,6 @@
       "category": "쇼핑",
       "income": false,
       "memo": "12345"
-
     },
     {
       "id": "649d",
@@ -341,7 +340,6 @@
       "category": "여행",
       "income": false,
       "memo": "서울"
-
     }
   ]
 }
