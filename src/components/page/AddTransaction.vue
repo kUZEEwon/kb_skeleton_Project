@@ -1,6 +1,6 @@
 <template>
     <div class="user-info-container">
-        <h3>Modal</h3>
+        <h3>거래내역 추가</h3>
         <div class="input-group">
             <label for="date">Date</label><br>
             <input id="date" class="inputVal" v-model.trim="date" type="date" placeholder="Enter the Date" />
