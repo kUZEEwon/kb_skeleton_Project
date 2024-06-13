@@ -73,12 +73,12 @@ export default {
                 "memo": this.memo
             })
                 .then((res) => {
-                    // console.log(res.data);
-                    // this.chartData.forEach(item => {
-                    //     if (item.category == this.category) {
-                    //         item.value += this.cost;
-                    //     }
-                    // })
+                    console.log(res.data);
+                    this.chartData.forEach(item => {
+                        if (item.category == this.category) {
+                            item.value += this.cost;
+                        }
+                    })
                 })
                 .catch((err) => {
                     console.log(err);
