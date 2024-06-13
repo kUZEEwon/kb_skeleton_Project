@@ -19,8 +19,8 @@
         <div class="input-group">
             <label for="income">Income</label><br>
             <select id="income" class="inputVal" v-model="income">
-                <option value="true">Income</option>
-                <option value="false">Expense</option>
+                <option value="true">수입</option>
+                <option value="false">지출</option>
             </select>
         </div>
         <div class="input-group">
