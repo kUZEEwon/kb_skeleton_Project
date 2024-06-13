@@ -2,12 +2,13 @@
   "users": [
     {
       "id": "1",
-      "username": "lstafford0",
+      "username": "qwer",
       "password": "1",
       "email": "mhaslehurst0@nifty.com"
     },
     {
       "id": "2",
+      "username": "asdfasdf",
       "password": "2",
       "email": "mspeerman1@noaa.gov"
     },
@@ -177,6 +178,88 @@
       "category": "쇼핑",
       "income": false,
       "memo": "33333"
+    },
+    {
+      "id": "65b10",
+      "uid": "1",
+      "date": "2024-05-10",
+      "cost": 33333,
+      "category": "쇼핑",
+      "income": false,
+      "memo": "33333"
+    },
+    {
+      "id": "65b11",
+      "uid": "1",
+      "date": "2024-05-10",
+      "cost": 11113,
+      "category": "교통",
+      "income": false,
+      "memo": "33333"
+    },
+    {
+      "id": "65b1",
+      "uid": "1",
+      "date": "2024-05-10",
+      "cost": 2223,
+      "category": "식비",
+      "income": false,
+      "memo": "33333"
+    },
+    {
+      "id": "65b2",
+      "uid": "1",
+      "date": "2024-05-10",
+      "cost": 2223,
+      "category": "월급",
+      "income": true,
+      "memo": "33333"
+    },
+    {
+      "id": "65b3",
+      "uid": "1",
+      "date": "2024-05-10",
+      "cost": 2223,
+      "category": "용돈",
+      "income": true,
+      "memo": "33333"
+    },
+    {
+      "id": "65b32",
+      "uid": "1",
+      "date": "2024-06-30",
+      "cost": 100000000,
+      "category": "용돈",
+      "income": true,
+      "memo": "야미"
+    },
+    {
+<<<<<<< HEAD
+      "id": "6d6e",
+      "uid": "1",
+      "date": "2024-06-13",
+      "cost": 1111,
+      "category": "쇼핑",
+      "income": false,
+      "memo": "12321"
+=======
+      "id": "bb5b",
+      "uid": "1",
+      "date": "2024-06-12",
+      "cost": 100000,
+      "category": "쇼핑",
+      "income": "false",
+      "memo": "test"
+    },
+    {
+      "id": "3684",
+      "uid": "1",
+      "date": "2024-06-12",
+      "cost": 12345,
+      "category": "쇼핑",
+      "income": false,
+      "memo": "12345"
+>>>>>>> 2a4d646e68f8c6adef194b169d2b02838bff5530
     }
   ]
 }

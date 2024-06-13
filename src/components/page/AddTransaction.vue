@@ -29,8 +29,8 @@
             <textarea v-model="memo" cols="30" rows="1"></textarea>
         </p>
         <p>
-            <button @click="addTransaction()">Create</button>
-            <button @click="$emit('close', false)">Close</button>
+            <button @click="addTransaction(); $emit('close')">Create</button>
+            <button @click="$emit('close')">Close</button>
         </p>
     </div>
 </template>
@@ -40,6 +40,12 @@ import axios from "axios";
 
 export default {
     name: "AddTransaction",
+    props: {
+        chartData: {
+            type: Array,
+            required: true
+        }
+    },
     data() {
         return {
             date: "",
@@ -47,7 +53,7 @@ export default {
             category: "",
             income: false,
             memo: "",
-            categorys: ["식비", "교통비", "쇼핑", "의료비", "여행", "취미", "문화생활"]
+            categorys: ["식비", "교통비", "쇼핑", "의료비", "여행", "취미", "문화생활", "전자기기"]
         }
     },
     methods: {
@@ -67,11 +73,28 @@ export default {
             })
                 .then((res) => {
                     console.log(res.data);
+                    this.updateChartData();
                 })
                 .catch((err) => {
                     console.log(err);
                 })
         },
+        updateChartData() {
+            // let updatedData = [...this.chartData]
+            // // console.log(updatedData)
+            // if (!updatedData[this.category]) {
+            //     updatedData.push({ "category": this.category, "value": this.cost })
+            // } else {
+            //     this.updatedData.map(item => {
+            //         if (item.category === this.category) {
+            //             item.value + this.cost
+            //         }
+            //     });
+            // }
+            let updatedData = { "category": this.category, "value": this.cost };
+
+            this.$emit('update:chartData', updatedData);
+        }
     }
 }
 </script>

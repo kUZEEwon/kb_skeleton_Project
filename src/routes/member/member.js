@@ -3,6 +3,11 @@ import SignUpView from "@/views/member/SignUpView.vue";
 
 export default [
     {
+        path: "/",
+        redirect: '/admin',
+        meta:{requiresAuth:false}
+    },
+    {
         path: "/login",
         name: 'login',
         component: LoginView,
