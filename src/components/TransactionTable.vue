@@ -1,20 +1,17 @@
 <template>
-    <p v-if="topCategory">
-    <b><u>{{ topCategory }}</u></b> 에 가장 많이 사용하셨어요.
-    </p>
-    <div class="container">
-        
-
-        <div><br/></div>
+    <div class="transaction-table">
+        <p v-if="topCategory" class="top-category">
+            <b><u>{{ topCategory }}</u></b>에 가장 많이 사용하셨어요.
+        </p>
+        <div class="container">
             <table>
-                <!-- <thead>
-            <tr>
-                <th>날짜</th>
-                <th>카테고리</th>
-                <th>메모</th>
-                <th>비용</th>
-            </tr>
-        </thead> -->
+                <thead>
+                    <tr>
+                        <th>카테고리</th>
+                        <th>비율</th>
+                        <th>총 금액</th>
+                    </tr>
+                </thead>
                 <tbody>
                     <tr v-for="(transaction, index) in sortedData" :key="index">
                         <td>{{ transaction.category }}</td>
@@ -24,8 +21,7 @@
                 </tbody>
             </table>
         </div>
-
-    
+    </div>
 </template>
 
 <script>
@@ -59,28 +55,47 @@ export default {
 </script>
 
 <style>
+.transaction-table {
+    font-family: 'Arial', sans-serif;
+    margin: 20px auto;
+    width: 80%;
+    max-width: 800px;
+}
+
+.top-category {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.2em;
+}
+
 .container {
     display: flex;
     justify-content: center;
-}
-p {
-    display: flex;
-    justify-content: center;
+    margin-top: 10px;
 }
 
 table {
-    width: 80%;
+    width: 100%;
     border-collapse: collapse;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 th,
 td {
-    padding: 8px;
+    padding: 12px 15px;
     border: 1px solid #ddd;
     text-align: center;
 }
 
 thead {
-    background-color: #f2f2f2;
+    background-color: #f4f4f4;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tbody tr:hover {
+    background-color: #f1f1f1;
 }
 </style>

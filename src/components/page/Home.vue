@@ -1,27 +1,35 @@
 <template>
-    <div class="calendar-container">
+
+    <br/>
+    <div>
+      <div class="calendar-container">
         <button @click="changeMonth(-1)">〈</button>
         <span>{{ formattedDate }}</span>
         <button @click="changeMonth(1)">〉</button>
+      </div>
+  
+      <!-- 내역 추가 버튼을 이 부분에 배치 -->
+      <div class="add-transaction-button">
+      <button @click="modalOpen">
+        내역 추가
+      </button>
     </div>
-
-    <!-- <div class="year-month-selector">
-        </div> -->
-    <button @click="modalOpen">
-        내역추가
-    </button>
-    <div class="modal-wrap" v-show="modalCheck">
+    <br/>
+  
+      <div class="modal-wrap" v-show="modalCheck">
         <div class="modal-container">
-            <AddTransaction @close="modalOpen"/>
+          <AddTransaction @close="modalOpen"/>
         </div>
-    </div>
-
-    <div>
+      </div>
+  
+      <div>
         <PieChart v-if="categoryData.length > 0" :chartData="categoryData" />
-
+        <br/><br/>
         <TransactionTable :data="category" :total_expend="calc(category)" />
+      </div>
     </div>
-</template>
+  </template>
+
 
 <script>
 import axios from 'axios';
@@ -165,6 +173,8 @@ export default {
 };
 </script>
 
+
+
 <style scoped>
 .balance-info {
     display: flex;
@@ -172,12 +182,13 @@ export default {
     padding: 20px;
 }
 
+/*
 .year-month-selector {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 20px;
-}
+}*/
 
 .year-display,
 .month-display {
@@ -204,35 +215,52 @@ export default {
 }
 
 .calendar-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
 
-    /* 배경 색상 */
-    padding: 10px;
-    border-radius: 10px;
-    color: aaa;
-    /* 텍스트 색상 */
-    font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  border-radius: 10px;
+  color: aaa;
+  font-size: 20px;
+
+}
+
+.add-transaction-button {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.add-transaction-button button {
+  background-color: #0073cf;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.add-transaction-button button:hover {
+  background-color: #0c5db4;
 }
 
 button {
-    background: none;
-    border: none;
-    color: #aaa;
-    /* 버튼 텍스트 색상 */
-    font-size: 24px;
-    cursor: pointer;
-    margin: 0 20px;
-    /* 버튼 간격 */
+
+  background: none;
+  border: none;
+  color: #aaa;
+  text-align: center;
+  font-size: 24px;
+  cursor: pointer;
+  margin: 0 20px;
 }
 
 button:hover {
-    color: #aaaaaa88;
-    /* 버튼 호버 색상 */
+  color: #aaaaaa88;
 }
 
-/* dimmed */
+
 .modal-wrap {
   position: fixed;
   left: 0;
@@ -241,7 +269,8 @@ button:hover {
   height: 100%;
   background: rgba(0, 0, 0, 0.4);
 }
-/* modal or popup */
+
+
 .modal-container {
   position: relative;
   top: 50%;

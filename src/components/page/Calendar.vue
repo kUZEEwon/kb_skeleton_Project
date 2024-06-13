@@ -1,52 +1,58 @@
 <template>
-    <div>
+    <br/><br/>
+    <div class="calendar-container">
         <h3>Calendar</h3>
-        <VDatePicker expanded v-model="date" mode="date" :attributes='attrs' @dayclick="onDayClick()" />
+        <VDatePicker 
+            expanded 
+            v-model="date" 
+            mode="date" 
+            :attributes="attrs" 
+            @dayclick="onDayClick()" 
+        />
 
         <table v-if="selectDayData.transaction.length !== 0">
             <thead>
-                <th><input type="checkbox" value="all" v-model="allChecked" :disabled="updating"></th>
-                <th>category</th>
-                <th>cost</th>
-                <th>income</th>
-                <th>memo</th>
+                <tr>
+                    <th><input type="checkbox" value="all" v-model="allChecked" :disabled="updating"></th>
+                    <th>Category</th>
+                    <th>Cost</th>
+                    <th>Income</th>
+                    <th>Memo</th>
+                </tr>
             </thead>
             <tbody>
                 <tr v-for="data in selectDayData.transaction" :key="data.id">
-                    <td><input type="checkbox" :id="data.id" :value="data.id" v-model="checked" :key="data.id"
-                            :disabled="updating"></td>
-                    <td v-if="checkId(data.id) && updating"><select :id="data" :value="data.category"
-                            v-model="data.category" :key="data.id">
-                            <option v-if="!data.income" v-for="category in expendCategory" :key="category.index">
-                                {{ category }}
-                            </option>
-                            <option else v-for="category in incomeCategory" :key="category.index">
-                                {{ category }}
-                            </option>
-                        </select></td>
-                    <td v-else>{{ data.category }}</td>
-                    <td v-if="checkId(data.id) && updating"><input type="number" :id="data" :value="data.cost"
-                            v-model="data.cost" :key="data.id"></td>
-                    <td v-else>{{ data.cost }}</td>
+                    <td><input type="checkbox" :id="data.id" :value="data.id" v-model="checked" :disabled="updating"></td>
                     <td v-if="checkId(data.id) && updating">
-                        <select :id="data" :value="data.income" v-model="data.income" :key="data.id">
-                            <option value="true">수입</option>
-                            <option value="false">지출</option>
+                        <select v-model="data.category">
+                            <option v-for="category in data.income ? incomeCategory : expendCategory" :key="category">
+                                {{ category }}
+                            </option>
                         </select>
                     </td>
-                    <td v-else>{{ data.income }}</td>
-                    <td v-if="checkId(data.id) && updating"><input type="text" :id="data" :value="data.memo"
-                            v-model="data.memo" :key="data.id"></td>
+                    <td v-else>{{ data.category }}</td>
+                    <td v-if="checkId(data.id) && updating">
+                        <input type="number" v-model="data.cost">
+                    </td>
+                    <td v-else>{{ data.cost }}</td>
+                    <td v-if="checkId(data.id) && updating">
+                        <select v-model="data.income">
+                            <option value="true">Income</option>
+                            <option value="false">Expense</option>
+                        </select>
+                    </td>
+                    <td v-else>{{ data.income ? 'Income' : 'Expense' }}</td>
+                    <td v-if="checkId(data.id) && updating">
+                        <input type="text" v-model="data.memo">
+                    </td>
                     <td v-else>{{ data.memo }}</td>
                 </tr>
                 <tr>
-                    <td v-if="!updating" colspan="5">
-                        <button @click="setUpdate()" :disabled="checked.length === 0">Update</button>
-                        <button @click="deleteTransaction()" :disabled="checked.length === 0">Delete</button>
-                    </td>
-                    <td v-else colspan="5">
-                        <button @click="updateTransaction()">modification completed</button>
-                        <button @click="setUpdate()">cancel</button>
+                    <td colspan="5" class="button-group">
+                        <button v-if="!updating" @click="setUpdate" :disabled="checked.length === 0">Update</button>
+                        <button v-if="!updating" @click="deleteTransaction" :disabled="checked.length === 0">Delete</button>
+                        <button v-else @click="updateTransaction">Save</button>
+                        <button v-else @click="setUpdate">Cancel</button>
                     </td>
                 </tr>
             </tbody>
@@ -196,4 +202,63 @@ function two(n) {
 
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+.calendar-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+h3 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+thead {
+    background-color: #007bff;
+    color: white;
+}
+
+thead th {
+    padding: 10px;
+}
+
+tbody td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ccc;
+}
+
+.button-group {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.button-group button {
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.button-group button:first-of-type {
+    background-color: #007bff;
+    color: white;
+}
+
+.button-group button:last-of-type {
+    background-color: #28a745;
+    color: white;
+}
+</style>
