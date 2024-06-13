@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h3>Modal</h3>
+        <h3>거래내역 추가</h3>
         <p>
             Date <br>
             <input class="inputVal" v-model.trim="date" type="date" placeholder="Enter your First Name" />
@@ -29,7 +29,7 @@
             Memo <br>
             <textarea v-model="memo" cols="30" rows="1"></textarea>
         </p>
-        <p>
+        <p class="button-group">
             <button @click="addTransaction(); close(); sendNewData()" v-bind:disabled="!checkVal">Create</button>
             <button @click="close()">Close</button>
         </p>
@@ -65,6 +65,12 @@ export default {
             categorys: ["식비", "교통비", "쇼핑", "의료비", "여행", "취미", "문화생활", "전자기기"],
             checkVal: false,
         }
+    },
+    updated() {
+        console.log("updated");
+    },
+    beforeUnmount() {
+        console.log("before Unmount");
     },
     watch: {
         'date': function () {
@@ -151,4 +157,50 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+p {
+    height: 60px;
+}
+input {
+    color: #222222;
+    border: none;
+    border-bottom: solid #aaaaaa 1px;
+    position: relative;
+    background: none;
+    z-index: 5;
+}
+
+select {
+    color: #222222;
+    border: none;
+    border-bottom: solid #aaaaaa 1px;
+    position: relative;
+    background: none;
+    z-index: 5;
+}
+
+.button-group {
+    text-align: center;
+    margin-bottom: 0px;
+    /* margin-top: 20px; */
+}
+
+.button-group button {
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.button-group button:first-of-type {
+    background-color: #007bff;
+    color: white;
+}
+
+.button-group button:last-of-type {
+    background-color: #28a745;
+    color: white;
+}
+</style>
