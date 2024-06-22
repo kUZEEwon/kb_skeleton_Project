@@ -1,6 +1,7 @@
 # Vue 3 + Vite
 
-kb-skeleton project
+readme 파일 수정
+
 
 ## Recommended IDE Setup
 
